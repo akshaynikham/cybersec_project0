@@ -1,1 +1,1760 @@
-Shell?1. When we speak of the command line, we are really referring to the shell.2. The shell is a program that takes keyboard commands and passes them to the operating system to carry out.3. Almost all Linux distributions supply a shell program from the GNU Project called bash.Terminal Emulators?When using a graphical user interface (GUI), we need another program called terminal emulators to interact with the SHELL.KDE uses konsole and GNOME uses gnome-terminal, it's likely called simply "terminal" on our menu.---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- Navigation -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------pwd - Print name of current working directory.cd - Change directoryls - list directory contents---Understanding the File System Tree---	- Like Windows, a Unix-like operating system such as Linux organizes its files in what is called a hierarchical directory structure.	- The first directory in the tree structure is called the root directory.	- Unix-like systems such as Linux always have a single file system tree, regardless of how many drives or storage devices are attached to the computer.	- Storage devices are attached (or mounted) at various points on the tree.---The current working directory---	- The directory we are standing is called the current working directory.	- To display current working directory we use pwd ( print working directory )	- Ex: 	[me@linuxbox ~]$ pwd		/home/me	- When we log in to our system ( or start a terminal session ) our current working directory is set to our home directory.	- Each user is given its own home directory and it is the only place a regular user is allowed to write files.---Listing the contents of a Directory---	- To the content of the files and directory, we use ls command.	- Ex: 	[me@linuxbox ~]$ ls 		Desktop Documents Music Pictures Public Templates Videos---Changing the current working Directory---- Absolute Pathnames- Relative Pathnames	---	Absolute Pathnames	---	- An absolute pathname begins by the root directory and follows the tree branch by branch until the path to the desired directory or file is complete.	- Ex: 	[me@linuxbox ~]$ cd /usr/bin		[me@linuxbox bin]$ pwd		/usr/bin		---	Relative Pathnames	---	- As absolute pathname starts from root directory and leads to its destination, a relative pathname starts from the working directory.	- It uses special notations such as "." (dot) and ".." (dot dot).	- The . notation refers to working directory and .. refers to working directory's parent directory.	- Ex:	[me@linuxbox bin]$ cd ..		[me@linuxbox usr]$ pwd		/usr	- Ex:	[me@linuxbox usr]$ cd ./bin		[me@linuxbox bin]$ pwd		/usr/bin------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- Exploring the file system -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------ls - list directory contentsfile - Determine file typeless - view file contents	---	Options and arguments	---	- command are often followed by one or more options that modify their behaviour and further by one or more arguments, 		the items upon which the command acts	- command -options arguments	- most commands use options which consists of a single character preceded by a dash, ex, "-l"	- Ex: 	[me@linuxbox ~]$ ls -lt	- Many commands support long options, consisting of a word preceded by two dashes	- Ex: 	[me@linuxbox ~]$ ls -lt --reverse	- The most common ls options		Table 3- 1: Common ls Options		Option 		Long 		Option Description		-a 		--all 		List all files, even those with names that begin with a period, which are normally not listed (that is, hidden).		-A 		--almost-all 	Like the -a option above except it does not list . (current directory) and .. (parent directory).		-d 		--directory 	Ordinarily, if a directory is specified, ls will list the contents of the directory, not the 						directory itself. Use this option in conjunction with the -l option to see details about the 						directory rather than its contents.		-F 		--classify 	This option will append an indicator character to the end of each listed name. For example, a 						forward slash (/) if the name is a directory.		-h 		--human-readable In long format listings, display file sizes in human readable format rather than in bytes.		-l 				Display results in long format.		-r 		--reverse Display the results in reverse order. Normally, ls displays its results in ascending alphabetical order.		-S 				Sort results by file size.		-t 				Sort by modification time.		---	A Longer Look at Long Format	---	- a long format provides a great deal or info	- consider this --> -rw-r--r-- 1 root root 3576296 2017-04-03 11:05 ubuntu.ogg	- -rw-r--r--  	--> 	Access rights to the file. 				The first character indicates the type of file. A leading means a regular file while a "d" indicates a directory.				The next three character indicates access rights for the file owner.				the next three character indicates access right for the members of the file's group.				the final three for everyone else.	- 1 		-->	File's number on hard links.	- root		-->	the user name of the file owner	- root 		-->	the name of the group the owns the file.	- 3576296	--> 	size of the file in bytes.	- 2017-04-03 11:05 -->	The date and time of file's last modification.	- ubuntu.ogg	--> 	name of the file.					---	Determining the file type with file	---	- We use file command to determine the file's type.	- syntax: file filename	- When invoked, the file command will print a brief description of the file's contents.	- Ex: 	[me@linuxbox ~]$ file picture.jpg		picture.jpg: JPEG image data, JFIF standard 1.01	---	viewing file contents with less	--- 	- the less command is a program to view text files.	- The less command is used like this: less filename------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- Manipulating Files and Directories --------------------------------------------------------------------------------------------------------------------------------------------------------------------- Wildcards: shell feature. using wildcards, also known as globbing. 	- helps to select filenames based on characters. 	- Wildcard table: 		- * --> matches any characters. 		- ? --> matches a single characters. 		- [characters] --> matches any character that is a member of set characters. 		- [!characters] or [^characters] --> Matches any character that is not a member of the set characters. 		- [[:class:]] --> Matches any characters that is a member of the specified class. 	- commonly used character classes 		- [:alnum:] --> Matches any alphanumerical characters. 		- [:alpha:] --> Matches any alphabetic character. 		- [:digit:] --> Matches any numeral 		- [:lower:] --> Matches any lowercase letter. 		- [:upper:] --> Matched any uppercase letter.---- mkdir: Create directories.---- cp: Copy files and directories. 	- cp can be used in 2 different ways. 		- cp item1 or item2 --> copy file or directory item1 to the file or directory item2 		- cp item... directory --> copies multiple items (either files or directories) into a directory. 	- Useful cp options. 		- -a --archive  	Copy the files and directories and all of their attributes, including ownerships and 					permissions. Normally, copies take on the default attributes of the user performing the 					copy. 		- -i --interactive 	Before overwriting the existing file, prompt the user for confirmation. 		- -r --recursive 	Recursively copy directories and their contents. This option (or the -a option) is required when 					copying directories. 		- -u --update 		When copying files from one directory to another, only copy files that either don't exist or 					are newer than the existing corresponding files, in the destination directory. This is useful when 					copying large numbers of files as it skips files that don't need to be copied. 		- -v --verbose 		Display informative messages as the copy is performed.---- mv: move and rename files. 	- Move performs both file moving and file renaming. 	- mv can be used in 2 different ways. 		- mv item1 or item2 --> move file or directory item1 to the file or directory item2 		- mv item... directory --> move multiple items (either files or directories) into directory. 	- Useful cp options. 	- 	-i --interactive 	Before overwriting an existing file, prompt the user for confirmation. If this option is not specified, mv will silently overwrite files. 		- -u --update 		When moving files from one directory to another, only move files that either don't exist, 					or are newer than the existing corresponding files in the destination directory. 		- -v --verbose 		Display informative messages as the move is performed.---- rm: Remove Files and Directories. 	- The rm command is used to remove (delete) files and directories 	- rm item... --> where item is one or more directory.  	- Useful cp options. 		-i --interactive 	Before deleting an existing file, prompt the user for confirmation. If this option is not specified, 					rm will silently delete files. 		-r --recursive 		Recursively delete directories. This means that if a directory being deleted has subdirectories, 					delete them too. To delete a directory, this option must be specified. 		-f --force 		Ignore nonexistent files and do not prompt. This overrides the --interactive option. 		-v --verbose 		Display informative messages as the deletion is performed.---- ln: Create links 	- this command is used to create either hard or symbolic links. 	- it is used in two ways 		- ln file link --> this create a hard link. 		- ln -s item link --> this creates a symbolic link where item is either file or directory. 	- Hard links: 		- Original way of creating links, compared to symbolic links, which are more modern. 		- In Linux/Unix file systems (like ext4, XFS, etc.), files are not stored directly by their names. 		- A file actually consists of data blocks (the contents of the file) and an inode (a data structure that stores metadata like file size, permissions, and pointers to data 			blocks). 		- A hard link is basically a directory entry that maps a file name to an inode. 		- By default, every file has a single hard link that gives the file its name. 		- Hard links have two important limitations: 			1.	A hard link cannot reference a file outside its own file system. This means a link 				cannot reference a file that is not on the same disk partition as the link itself. 			2. 	A hard link may not reference a directory. 	- Symbolic links: 		- Symbolic links were created to overcome the limitations of hard links. 		- Symbolic links work by creating a special type of file that contains a text pointer to the referenced file or directory. 		- In this regard, they operate in much the same way as a Windows shortcut, though of course they predate the Windows feature by many years. ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- Working with Commands -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------What Exactly Are Commands? It might be any of the following 	- An executable program: like all those files in /usr/bin. 	- A command built into the shell itself: Bash supports a number of commands internally called shell built-ins. 	- A shell function: Shell functions are miniature shell scripts incorporated into the environment. 	- An alias: Aliases are commands that we can define ourselves, built from other commands.---Identifying commands.--- 	- It is often useful to know exactly which of the four kinds of commands is being used and Linux provides a couple of ways to find out. 	- type: Display a Command's Type 		- The shell builtin that displays the kind of command the shell will execute, given a particular command once. 		- It works like this: type command --> "command" is the command we want to examine. 	- which: Display an Executable's Location 		- Sometimes there is more than one version of an executable program installed on a system. To determine the exact location of a given executable, 		  the which command is used. 		- ex: 	[me@linuxbox ~]$ which ls 			/usr/bin/ls 		- Imp: which only for executable programs, not bulletins nor alias that are substitutes for actual executable programs.---Getting the command's Documentation--- 	- help: get help for shell builtins 		- bash has built-in facility available for each of the shell builtins. 		- ex: 	[me@linuxbox ~]$ help cd 			cd: cd [-L|[-P [-e]] [-@]] [dir] 			Change the shell working directory. 			Change the current directory to DIR. The default DIR is the 			value of the HOME shell variable. 			The variable CDPATH defines the search path for the directory 			containing DIR. Alternative directory names in CDPATH are 			separated by a colon (:). A null directory name is the same as 			the current directory. If DIR begins with a slash (/), then 			CDPATH is not used. 			If the directory is not found, and the shell option `cdable_vars' 			is set, the word is assumed to be a variable name. If that 			variable has a value, its value is used for DIR. 			Options: 				-L force symbolic links to be followed: resolve symbolic 				links in DIR after processing instances of `..' 				-P use the physical directory structure without following 				symbolic links: resolve symbolic links in DIR before 				processing instances of `..' 				-e if the -P option is supplied, and the current working 				directory cannot be determined successfully, exit with 				a non-zero status 				-@ on systems that support it, present a file with extended 				 attributes as a directory containing the file attributes 				 The default is to follow symbolic links, as if `-L' were 				 specified. `..' is processed by removing the immediately previous 				 pathname component back to a slash or the beginning of DIR. 				 Exit Status: 					 Returns 0 if the directory is changed, and if $PWD is set 					 successfully when -P is used; non-zero otherwise. 		- A note on notation:   When square brackets appear in the description of a command's syntax, 					they indicate optional items. A vertical bar character indicates mutually exclusive 					items. 					In the case of the cd command above: cd [-L|[-P[-e]]] [dir] 					This notation says that the command cd may be followed optionally by either a “-L” or a 					“-P” and further, if the “-P” option is specified the “-e” option may also be included followed by the optional argument “dir”. 	- --help -> Display usage information 		    Many executable program support "--help" option that displays a description of the command's supported syntax and options. 		    -ex: [me@linuxbox ~]$ mkdir --help 	- man -> Display a program's Manual Page. 		- Most executable program intended for command line use provide a formal piece of documentation called manual or man page. 		- A special paging program called man is used to view them. 		- syntax: man program 	- apropos -> Display Appropriate commands. 			- it is possible to search the list of man pages for possible matches based on a search item. 			- ex: 	[me@linuxbox ~]$ apropos partition 				output -> addpart(8) 		- simple wrapper around the "add partition"... 				explanation -> first field is the name of the man page, second field shows the section. 			- Note: man command the "-k" option performs the same function as apropos. 	- whatis -> Display one-line manual page description. 			- whatis program displays the name and a one-line description of a man page matching a specific keyword. 			- ex: 	[me@linuxbox ~]$ whatis ls 				ls (1) - list directory contents  	- info -> The GNU Project provides an alternative to man pages for their programs, called “info.” 		  Info manuals are displayed with a reader program named, appropriately enough, info. 		  Info pages are hyperlinked much like web pages.---- Creating our own command---- 	- syntax: alias name='string'	- After the command alias, we give alias a name followed immediately (no whitespace	  allowed) by an equal sign, followed immediately by a quoted string containing the meaning to be assigned to the name.	- Ex: [me@linuxbox ~]$ alias foo='cd /usr; ls; cd -'	- To remove an alias, the unalias command is used, like so: [me@linuxbox ~]$ unalias foo	- To see all the aliases defined in the environment, use the alias command without arguments.----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- Redirection ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------Introduce the following commands,1. cat - concatenate files2. sort - sort lines of text3. uniq - Report or omit repeated lines4. grep - Print lines matching a pattern5. wc - print newline, word and byte counts for each file6. head - Output the first part of a file7. tail - output the last part of a file8. tee - Read from standard input and write to standard output and files---Standard input, output and error---	- Keeping with the Unix theme that "everything is a file" programs such as ls send their results to a special file called standard output (often expressed as stdout)	  and their status message to standard error (stderr).	- By default, both stdout and stderr are linked to screen and not saved to file.	- many programs take input from a facility called standard input (stdin), which is by default attached to the keyboard.	- Standard error messages are sent to standard error ( stderr ).	- with I/O redirection we can change where the input comes and output goes.---Redirecting the standard output---	- To redirect standard output to another file instead of the screen, we use > redirection operator followed by the name of the file.	- Ex: [me@linuxbox ~]$ ls -l /usr/bin > ls-output.txt	- Note: when redirect operator is used ">" the destination file always overwritten.	- To redirect output without overwriting the file we need to use ">>" 	- Ex: [me@linuxbox ~]$ ls -l /usr/bin >> ls-output.txt---Group Commands---	- Scenario: imagine a situation where we want to execute a series of commands and send the results to a log file. 	- we can try this [me@linuxbox ~]$ command1; command2; command3	- Ex: [me@linuxbox ~]$ command1 > logfile.txt; command2 >> logfile.txt; command3 >> logfile.txt	- but we can also do this by creating a group command: [me@linuxbox ~]$ { command1; command2; command3; } > logfile.txt---Redirecting Standard Error---	- Redirecting standard error lacks the ease of a dedicated redirection operator.	- we referred first three file stream as standard input, output and error, the shell refer to them internally as file descriptor 0,1,2 respectively.	- shell provides a notation for redirecting file using file descriptor.	- since standard error is same as file descriptor number 2, we can redirect standard error as with the notation as 		[me@linuxbox ~]$ ls -l /bin/usr 2> ls-error.txt				---Redirecting standard output and standard error to one file---	- there are two ways to do it: 		1. [me@linuxbox ~]$ ls -l /bin/usr > ls-output.txt 2>&1		2. [me@linuxbox ~]$ ls -l /bin/usr &> ls-output.txt	- We can also append the standard output and standard error streams to a single file like so:		[me@linuxbox ~]$ ls -l /bin/usr &>> ls-output.txt---Disposing of unwanted output---	- We can throw away the output to a special file called "dev/null"	- the file is a system device often referred to as bit bucket, which accepts input and does nothing with it.---Redirecting the standard input---		cat - concatenate files	-----------------------	- the cat command reads one or more files and copies them to standard output like: cat [file...]	- cat is often used to display short files.	- since cat accepts more than one file as an argument, it can also be used to join files together.	- if cat is not given any arguments, it reads from standard input and since standard input is by default attached to the keyboard, 	  it will wait for user input. ctl-d to tell cat it has reached end of the file.	- cat copies standard input to standard output, this behaviour can be used to create short text files.	- Ex: 	[me@linuxbox ~]$ cat > lazy_dog.txt		The quick brown fox jumps over the lazy dog.	- In the above example, cat will accept the user input and place the input into the file. If the file does not exists the > operator will create one.	- To see our results, we can use cat to copy the file to stdout again.	- Ex: 	[me@linuxbox ~]$ cat lazy_dog.txt		The quick brown fox jumps over the lazy dog.	- we can redirecting standard input to cat as shown: 		[me@linuxbox ~]$ cat < lazy_dog.txt 		The quick brown fox jumps over the lazy dog.	- Using the "<" redirection operator we can change the source from standard input from the keyboard to the file lazy_dog.txt	Pipeline	-----------------------	- The capability of commands to read data from standard input and send to standard output is utilized by a shell feature called pipelines.	- Using the pipe operator | (vertical bar), the standard output of one command can be piped into standard input of another.	- command1 | command2		Filters		-----------------------		- Sort		Uniq - report or Omit repeated lines		-----------------------		- The uniq command is used in conjunction with sort.		- uniq accepts a sorted list of data either from standard input or a single filename argument and by default removes any duplicates from the list.		- Ex: [me@linuxbox ~]$ ls /bin /usr/bin | sort | uniq | less		- If we want to see the list of duplicates instead, we add the “-d” option to uniq like so:		- Ex: [me@linuxbox ~]$ ls /bin /usr/bin | sort | uniq -d | less		wc - Print line, word and byte count		-----------------------		- The wc (word count) command is used to display the number of lines, words, and bytes contained in a files.		- Ex: 	[me@linuxbox ~]$ wc ls-output.txt 			7902 64566 503634 ls-output		- it prints lines, count and byte counts		- Like previous commands, if executed without a command line arguments, wc accepts standard input.		grep - Print lines matching a pattern		-----------------------		- grep is a powerful program used to find text pattern within the files. It's used like this,		- syntax: grep pattern [file...]		- when grep encounters a "pattern" in the file, it prints out the lines containing it.		- Ex: 	[me@linuxbox ~]$ ls /bin /usr/bin | sort | uniq | grep zip			bunzip2			bzip2			gunzip			gzip			unzip			zip			zipcloak			zipgrep			zipinfo			zipnote			zipsplit		- few handy options for grep			-i, causes grep to ignore case when performing the search			-l, causes grep to only output the names of the files containing text that matches the pattern.			-v, causes grep to print only lines that do not match the pattern.			-w, caused grep to only match whole words. 		head/tail - Print First/Last Part of files		-----------------------		- head prints the first ten lines and tails command prints the last ten lines.		- Ex:	[me@linuxbox ~]$ head -n 5 ls-output.txt			total 343496			-rwxr-xr-x 1 root root 31316 2007-12-05 08:58 [			-rwxr-xr-x 1 root root 8240 2007-12-09 13:39 411toppm			-rwxr-xr-x 1 root root 111276 2007-11-26 14:27 a2p			-rwxr-xr-x 1 root root 25368 2006-10-06 20:16 a52dec			[me@linuxbox ~]$ tail -n 5 ls-output.txt			-rwxr-xr-x 1 root root 5234 2007-06-27 10:56 znew			-rwxr-xr-x 1 root root 691 2005-09-10 04:21 zonetab2pot.py			-rw-r--r-- 1 root root 930 2007-11-01 12:23 zonetab2pot.pyc			-rw-r--r-- 1 root root 930 2007-11-01 12:23 zonetab2pot.pyo			lrwxrwxrwx 1 root root 6 2016-01-31 05:22 zsoelim -> soelims				- These commands can be used in pipelines as well:		- Ex: [me@linuxbox ~]$ ls /usr/bin | tail -n 5		- "-n" options with head and tail allow us to cut an excerpt from the middle of the file.		- The -n option when used with head allows a negative value which causes all but the last n lines to be output. 			Similarly, the -n option with tail allows a plus sign causing all but the first n lines to be output. 				tee - Read from Stdin and Output to Stdout and Files		-----------------------		- Linux provides a command called tee which creates a "tee" fitting on our pipe.		- The tee program reads standard input and copies to standard out ( allowing the data to continue down the pipeline) and to one or more files.		- Ex: [me@linuxbox ~]$ ls /usr/bin | tee ls.txt | grep zip--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- Seeing the world as shell sees it -------------------------------------------------------------------------------------------------------------------------------------------------------------------------echo – Display a line of text---Expansion---- Each time we type a command and press enter key, bash performs several substitution upon the text before it carries out our command.- The process is called expansion.- Ex: 	[me@linuxbox ~]$ echo *	Desktop Documents ls-output.txt Music Pictures Public Templates Videos- Explanation: 	Here the command should have printed * but it didn't. This is because when the Enter key is pressed, the shell automatically expands the qualifying		before the command is carried out, so the echo command never saw the *, only it's extended result. 	---	Pathname Expansion	---	- The mechanism by which wildcards work is called pathname expansion.	- Given a home directory looks lik this,		[me@linuxbox ~]$ ls		Desktop ls-output.txt Pictures Templates Documents Music Public Videos	- we can apply the expansion as:		ex1: 	[me@linuxbox ~]$ echo D*			Desktop Documents			ex2:	[me@linuxbox ~]$ echo *s			Documents Pictures Templates Videos		ex3:	[me@linuxbox ~]$ echo [[:upper:]]*			Desktop Documents Music Pictures Public Templates Videos		---	Tilde Expansion	---	- the tilde character (~) has a special meaning.	- When used at the beginning of a word, it expands into the name of the home directory of the named user or, if no user is named, the home directory of the current 		user.	- ex: 	[me@linuxbox ~]$ echo ~		/home/me	---	Arithmetic Expansion	---	- The shell allows arithmetic to be performed by expansion. 	- This allows us to use the shell prompt as a calculator.	- Ex: 	[me@linuxbox ~]$ echo $((2 + 2))		4	- It uses the following form: $((expression))		---	Brace Expansion	---	- Perhaps the strangest expansion is called brace expansion.	- Ex1: 	[me@linuxbox ~]$ echo Front-{A,B,C}-Back		Front-A-Back Front-B-Back Front-C-Back	- Ex2:	[me@linuxbox ~]$ echo Number_{1..5}		Number_1 Number_2 Number_3 Number_4 Number_5		---	Parameter Expansion	---	- It is a feature more powerful in shell scripts rather than the command line.	- Many of its capability has to do with small chunks of data and to give each chunks a name. Many such chunks, more properly called variables.	- For example, the variable USER contains user name. [me@linuxbox ~]$ echo $USER  --> me	- To see a list of available variables, try this: [me@linuxbox ~]$ printenv | less		---	Command Substitution	---	- command substitution allows us to use the output of command as expansion.	- Ex: 	[me@linuxbox ~]$ echo $(ls)		Desktop Documents ls-output.txt Music Pictures Public Templates Videos	- Ex:	[me@linuxbox ~]$ ls -l $(which cp)		-rwxr-xr-x 1 root root 71516 2007-12-05 08:58 /bin/cp	- Entire pipelines can be used Ex: [me@linuxbox ~]$ file $(ls -d /usr/bin/* | grep zip)	- There is an alternate syntax for command substitution used by older shell programs that is also supported in bash. 		It uses backquotes instead of the dollar sign and parentheses. 	- Ex: 	[me@linuxbox ~]$ ls -l `which cp`		-rwxr-xr-x 1 root root 71516 2007-12-05 08:58 /bin/cp---Quoting	---		- Time to learn how to control the expansion.	- Ex:	[me@linuxbox ~]$ echo this is a 	test		this is a test	- Explanation: word-splitting by the shell removed extra whitespace from the echo command's list of arguments.	- Ex: 	[me@linuxbox ~]$ echo The total is $100.00		The total is 00.00	- Explanation: parameter expansion substituted an empty string for the value of $1 because it was an undefined variable.	- Why Quoting?? --> The shell provides a mechanism called quoting to selectively suppress unwanted expansions	---	Double quotes	---	- If we place text inside double quotes, all the special characters used by the shell lose their special meaning and are treated as ordinary characters	- The exceptions are $, \ (backslash), and ` (back-quote). 	- This means that word-splitting, pathname expansion, tilde expansion, and brace expansion are suppressed,	- But parameter expansion, arithmetic expansion, and command substitution are still carried out.	- Ex: 	[me@linuxbox ~]$ echo "$USER $((2+2)) $(df -h)"	- Ex: 	[me@linuxbox ~]$ echo "this is a 	test"		this is a 	test		---	Single quotes	---	- If we need to suppress all expansions, we use single quotes.	- Here's a comparison of unquoted, double quotes, and single quotes:		[me@linuxbox ~]$ echo text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER		text /home/me/ls-output.txt a b foo 4 me		[me@linuxbox ~]$ echo "text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER"		text ~/*.txt {a,b} foo 4 me		[me@linuxbox ~]$ echo 'text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER'		text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER		---	Escaping Characters	---	- Sometimes we want to quote only a single character.	- To do this, we can precede a character with a backslash, which in this context is called the escape character.	- Often, this is done inside double quotes to selectively prevent an expansion.	- Ex: 	[me@linuxbox ~]$ echo "The balance for user $USER is: \$5.00"		The balance for user me is: $5.00	- Is is common to use escaping to eliminate special meaning of a character in a file name.	- Ex:	[me@linuxbox ~]$ mv bad\&filename good_filename	- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- Advanced Keyboard Tricks ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------clear - Clear the screenhistory - Display the contents of the history list---Command Line Editing---		---	Cursor Movement	---	Key 		Action	Ctrl-a 		Move cursor to the beginning of the line.	Ctrl-e 		Move cursor to the end of the line.	Ctrl-f 		Move cursor forward one character; same as the right arrow key.	Ctrl-b 		Move cursor backward one character; same as the left arrow key.	Alt-f 		Move cursor forward one word.	Alt-b 		Move cursor backward one word.	Ctrl-l 		Clear the screen and move the cursor to the top-left corner. The clear command does the same thing.	---	Modifying Text	---	Key 		Action	Ctrl-d 		Delete the character at the cursor location.	Ctrl-t 		Transpose (exchange) the character at the cursor location with the one preceding it.	Alt-t 		Transpose the word at the cursor location with the one preceding it.	Alt-l		Convert the characters from the cursor location to the end of the word to lowercase.	Alt-u		Convert the characters from the cursor location to the end of the word to uppercase.	---	Cutting and Pasting (Killing and Yanking) Text	---	Key		Action	Ctrl-k		Kill text from the cursor location to the end of line	Ctrl-u		Kill text from the cursor location to the beginning of the line.	Alt-d		Kill text from the cursor location to the end of the current word.	Alt-Backspace	Kill text from the cursor location to the beginning of the current			word. If the cursor is at the beginning of a word, kill the previous word.	Ctrl-y 		Yank text from the kill-ring and insert it at the cursor location.	---	Completion	---	- Another way that the shell can help us is through a mechanism called completion.	- Completion occurs when we press the tab key while typing a command.	Key		Action		---	Using History	---	- bash maintains a history of commands that have been entered. 	- This list is maintained in the home directory in a file called .bash_history		---		Searching history		---		- We can view the contents of history by doing the following, [me@linuxbox ~]$ history | less		- most modern Linux distributions configure bash to store the last 1000 commands we have entered.		- History commands		Key 		Action		Ctrl-p 		Move to the previous history entry. This is the same action as the up arrow.		Ctrl-n 		Move to the next history entry. This is the same action as the down arrow.		Alt-< 		Move to the beginning (top) of the history list.		Alt-> 		Move to the end (bottom) of the history list, i.e., the current command line.		Ctrl-r 		Reverse incremental search. This searches incrementally from the current command line up the history list.		Alt-p 		Reverse search, nonincremental. With this key, type in the search string and press enter before the search is performed.		Alt-n 		Forward search, nonincremental.		Ctrl-o 		Execute the current item in the history list and advance to the next one. This is handy if we are trying to re-execute a sequence of				commands in the history list		---		History Expansion		---		- The shell offer a specialized type of expansion for items in the history list by using the ! character.		sequence 	Action		!! 		Repeat the last command. It is probably easier to press up arrow and enter		!number 	Repeat history list item number.		!string		Repeat last history list item starting with string.		!?string	Repeat last history list item containing string.		---		Script		---		- Most Linux distributions include a program called script		- It can be used to record entire shell session and store it in a file.		- Syntax: Script filename		- if not filename is specified, the file typescript is used.------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ Permissions --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------id 	- Display user identitychmod 	- Change a file's modeunmask	- Set the default file permissionssu	- run a shell as another usersudo	- Execute a command as another userchown	- change the file's ownerchgrp	- change a file's group ownershipaddgroup - add a user or a group to the systemusermod	- modify a user accountpasswd	- change a user's password	---	Users, Group members, and Everybody Else	---	- To find info about our identity, we use id command	- Ex:	[me@linuxbox ~]$ id		uid=500(me) gid=500(me) groups=500(me)	- Ex:	[me@linuxbox ~]$ id		uid=1000(me) gid=1000(me) groups=4(adm),20(dialout),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),108(lpadmin),114(admin),1000(me)	- In Fedora, the uid and gid numbering for regular user account starts at 500 & in Ubuntu it starts from 1000.	- Like so many things in Linux, it comes from a text files. User accounts are defined in the /etc/passwd file and groups are defined in the /etc/group file.	- when users and groups are created, these modified along with /etc/shadow, which holds the info about the user's password.		---	Reading, writing and Executing	---	- Access rights to files and directories are defined in terms of read access, write access and execution access.	- Ex: 	[me@linuxbox ~]$ ls -l foo.txt		-rw-rw-r-- 1 me me 0 2016-03-06 14:52 foo.txt	- The first 10 characters of the listing are file attributes.	- The first of the characters are the file types.		Table file table		Attribute	File type		-		a regular file		d		a directory		l		a symbolic link. For symbolic links, the remaining file attributes are always "rwxrwxrwx" and are dummy values		c		a character special file. The file type refers to a device that handle data as a stream of bytes, such as terminal or /dev/null		b		a block special file. This file type refers to a device that handles data in blocks, such as a hard disk or DVD drive		- The remaining nine characters of the file attributes, called the file mode, represent the read, write and execute permissions for the file's owner		file's group owner and everybody else.	- 	User	Group	others		rwx	rwx	rwx	- Permission Attributes:		Attributes		Files									Directories		r			Allows are file to be opened and read.					Allows a directory content to be listed, but no file info is available 															unless the execute attribute is also set.		w			Allows the file to be written to or truncated, but will not allow	Allows the file within a directory to be created, deleted and renamed if					files to delete or renamed. The ability to delete or rename depends 	the execute attribute is also set.					on directory attribute									x			Allows the file to be treated as a program and executed.		Allows a directory to be entered (i.e., cd directory) and					Program files written in scripting languages must also be set as	directory metadata (i.e, ls -l directory) to be accessed.					readable to be executed.						File operations such cp, rm, and mv require this access to 														the directory.	---				chmod – Change File Mode	---	- to change the mode (permissions) of a file and directory, the chmod command is used.	- only the file's owner or superuser can change the mode of file or directory.	- chmod supports two distinct ways to specify mode change: Octal number representation and symbolic representation.									- With octal notation, we use octal numbers to set the pattern of desired permission.	- Table 9-4: File Modes in Binary and Octal		Octal Binary File Mode		0 	000 	---		1 	001 	--x		2 	010 	-w-		3 	011 	-wx		4 	100 	r--		5 	101 	r-x		6 	110 	rw-		7 	111 	rwx	- Ex:	[me@linuxbox ~]$ > foo.txt		[me@linuxbox ~]$ ls -l foo.txt		-rw-rw-r-- 1 me me 0 2016-03-06 14:52 foo.txt		[me@linuxbox ~]$ chmod 600 foo.txt		[me@linuxbox ~]$ ls -l foo.txt		-rw------- 1 me me 0 2016-03-06 14:52 foo.txt	- chmod also supports symbolic notation for specifying file mode.	- Symbolic notation is divided into three parts:		- Who the change will affect		- Which operation will be performed		- What permission will be set	- To specify who is affected a combination of characters, "u" "g" "o" "a" is used.	- 	Symbol		Meaning		u		Short for user i.e., the file or directory's owner				g		Group owner		o		Short for others		a		Short for "all". This is a combination of "u" "g" and "o".	- if no characters in specified "all" will be assumed.	- The operation may be a "+" indicating that a permission is to be added, a "-" indicating that a permission is to be take away 		or a "=" indicating that only the specified permission are to be applied and all others to be removed.	- Ex: 	u+x   --> Add execute permission for the owner.		o-rw  --> Remove read and write permission for anyone besides the user and the group owner.	---	umask - user file creation mask	---	- The umask command controls the default permission given to a file when it is created.	- It uses octal notations to express a mask of bits to be removed from file mode attributes.	- Default permission: 		When a file is created the system starts with base permissions of 666 ( read + write for everyone ), no execute by default.		When a directory is created, the system starts with base permission of 777 ( read + write + execute for everyone ) then the unmask value 		is subtracted (bitwise) to get a final permissions.	- suppose if umask is 0002. then 		New files:		start with 666		Subtract 022 → results in 644 (rw-r--r--)		New directories:		Start with 777		Subtract 022 → results in 755 (rwxr-xr-x)	-	Original file mode 	--- rw- rw- rw		Mask 			000 000 010 010		Result 			--- rw- r-- r--		where a 1 appears in the binary value, the corresponding attribute is unset.		---	Changing identities	---	- There are three ways to change identities		1. Log out and log back in as the alternative user.		2. Use the su command		3. Use the sudo command	We will focus on 2 and 3.			--- 		su - Run a Shell with Substitute User and Group IDs		---		- su command allows us to assume the identity of another user and either start a new shell session with that user's ID or			to issue a single command as that user.		- Syntax: su [-[l]] [user]		- If "-l" option is included, the resulting shell session is a login shell for the specified user.		- The user environment is loaded and the working directory is changed to the user's home directory.		- If user is not specified, the superuser is assumed.		- "-l" can also be abbreviated as "-"		- Ex: 	[me@linuxbox ~]$ su -			Password:			[root@linuxbox ~]#		- **It is also possible to execute a single command rather than starting a new interactive command by using the su this way,			su -c "command"		- Ex: 	[me@linuxbox ~]$ su -c 'ls -l /root/*'			Password:			-rw------- 1 root root 754 2007-08-11 03:19 /root/anaconda-ks.cfg		---		sudo - Execute a Command as Another User		---		- sudo command is like su in many ways but has some important capabilities.		- The admin can configure sudo to allow an ordinary user to execute command as a different user (usually superuser) in a controlled way.		- **In particular, a user may be restricted to one or more specific commands and no others.		- **Another important difference is that the use of sudo does not require access to the superuser's password. 			Authenticating using sudo, requires the user’s own password.		- Ex:	[me@linuxbox ~]$ sudo backup_script			Password:			System Backup Starting...		- that sudo can be used to start an interactive superuser session (much like su -) by using the -i option		- To see what privileges are granted by sudo, use the -l option to list them:			[me@linuxbox ~]$ sudo -l			User me may run the following commands on this host:				(ALL) ALL				---		chown - Change file owner and group		---		- chown is used to change the owner and group owner of a file or a directory.		- Superuser privilege are required to use this command.		- Syntax: chown [owner][:[group]] file...		- 	Argument 	Results			bob 		Changes the ownership of the file from its current owner to user bob.			bob:		users Changes the ownership of the file from its current owner to user					bob and changes the file group owner to group users.			:admins 	Changes the group owner to the group admins. The file owner is unchanged.			bob: 		Changes the file owner from the current owner to user bob and					changes the group owner to the login group of user bob.				---		chgrp – Change Group Ownership		---		- In older version of Unix, chown command only changed file ownership, not group ownership.		- For that purpose a separate command, chgrp was used.		---		Changing the Password		---		- To set or change a password, passwd command is used.		- Syntax: passwd [user]		- If we have superuser privileges, then we can specify a username as an argument for passwd command to the set the password for another user.		- ** the passwd, addgroup, and usermod commands are part of a suite of commands in shadow-utils package.		- 	command		Description		  	lastlog		reports most recent login of all users or of a given user.			useradd		create a new user or update default new user information.			usermod		modify a user account							userdel		delete a user account			groupadd	Create a new group			groupdel	delete a group			groupmod	modify a group definition on the system-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- Processes --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ps 	- report a snapshot of current processes.top 	- display tasksjobs	- list active jobsbg	- place a job in the backgroundfg	- place a job in the foregroundkill	- send a signal to a processkillall	- kill processes by namenice	- Run a program with modified scheduling priorityrenice	- alter priority of running processesnohup	- run a command immune to hangupshalt/power-off/reboot	- halt,power-off or reboot the system.shutdown - shutdown or reboot the system	---	How a process works	---	- when a system starts up, the kernel initiates a few of it's own activities as processes and launches a program called init.	- init, in turn, starts system which starts all the system services.	- In older Linux distro, init runs a series of shell scripts (located in /etc) called init scripts.	- Many system services are implemented as daemon programs, programs that just sit in the background and do their thing		without having any user interface.	- the kernel maintains info about each process to help keep things organized. Each process is assigned a process ID (PID)	- process ID are assigned in ascending order, with init always getting PID 1.	- The kernel also keeps track of the memory assigned to each process, as well as the processes' readiness to resume execution. 	- Like files, processes also have owners and user IDs, effective user IDs, etc.	---	Viewing the process	---	- one of the most commonly used tool is ps command.	- 	[me@linuxbox ~]$ ps 		PID 	TTY 	TIME 	CMD		5198 	pts/1 00:00:00 bash		10129 	pts/1 00:00:00 ps	- By default only shows processes associated with current terminal session.	- TTY is short for "teletype", refers controlling terminal of the process.	- TIME is the amount of cpu time consumed by the process.	- 	[me@linuxbox ~]$ ps x		PID TTY STAT 	TIME 	COMMAND 		2799 ? 	Ssl 	0:00 /usr/libexec/bonobo-activation-server –ac 		2820 ? 	Sl 	0:01 /usr/libexec/evolution-data-server-1.10 -	- the presence of "?" in TTY column indicates not controlling terminal.	- STAT is short for state		R	Running. This means that the process is running or ready to run.		S	Sleeping. The process is not running; rather, it is waiting for an event, such as a keystroke or network packet.		D	Uninterruptible sleep. The process is waiting for I/O such as a disk drive.		T	Stopped. The process has been instructed to stop.		Z	A defunct or “zombie” process. This is a child process that has terminated but has not been cleaned up by its parent.		<	A high-priority process. It's possible to grant more importance to a process, giving it more time on the CPU. This property of a process			is called niceness. A process with high priority is said to be less nice because it's taking more of the CPU's time, which leaves less for			everybody else.		N	A low-priority process. A process with low priority (a “nice” process) will get processor time only after other processes with			higher priority have been serviced.	- Another popular set of options is “aux” (without a leading dash). This gives us even more information.	- 	[me@linuxbox ~]$ ps aux		USER PID %CPU %MEM VSZ  RSS TTY STAT START TIME COMMAND		root 1   0.0  0.0  2136 644 ?   Ss   Mar05 0:31 init	- This set of options displays the processes belonging to every user.	- The most popular BSD options are		Option 	Function		x 	List our running processes.		ax 	List all running processes..		w 	Include full command names.		u 	Verbose listing.	---	Viewing processes Dynamically with top	---	- ps view machine state at the moment but top shares more dynamic view of the machine's activity.	- it continuously updates, by default every 3 seconds.---Controlling the process---	---	Interrupting a process	---	- Ctrl-c will interrupts a program	---	Putting a process in the background	---	- A program can be placed in background using & 	- Ex: 	[me@linuxbox ~]$ xlogo &		[1] 28236		[me@linuxbox ~]$	- the numbers are shell feature called job control	- it's telling that we created a job number 1 ([1]) and it has PID 28236	- using the jobs command the shell's control facility let us to list jobs launched from our terminal	- we can put multiple commands in background,	- Ex:	me@linuxbox:~$ xlogo & gedit &		[1] 47211		[2] 47212		---	Returning a Process to the Foreground 	---	- we use fg command to bring the program to the foreground	- we can use % followed by the job number (called a jobspec) to do the same.	- Ex:	[me@linuxbox ~]$ jobs		[1]+ Running xlogo &		[me@linuxbox ~]$ fg %1		xlogo	---	Stopping (pausing) a process	---	- we can stop a program without terminating it by using Ctrl-z	- we can either continue the program execution in the foreground, using the fg command or resume the program's execution in the background with the bg command.		---	controlling a process	---	- we can control the priority (niceness) of a program using nice and renice command.	- Only superuser can priority of the process and normal user can only decrease the priority of the process.	- Niceness adjustments are expressed from -20 ( highest priority, least nice) to +19 ( lowest priority, very nice), with a default value 0.	- [me@linuxbox ~]$ sudo nice -n -10 must-run-fast	- 	[me@linuxbox ~]$ ps		PID TTY TIME CMD		379087 pts/9 00:00:00 bash 		379215 pts/9 00:00:00 cpu-hog 		379223 pts/9 00:00:00 ps		[me@linuxbox ~]$ renice -n 19 379215---Signals---	- signals are one of several ways that the operating system communicates with the programs.	---	using kill command to send a signal	---	- earlier we used Ctrl-c and Ctrl-z. when terminal receives these keystrokes, it sends a signal to the program in foreground,		Ctrl-c sent a signal called INT (interrupt) and Ctrl-z sent a signal called TSTP (terminal stop).	- we can send a signal to programs using kill		syntax: kill [-signal] PID...	- If not signal is specified, TERM (terminate) signal is sent by default.	- Some signals are sent to programs and some are sent directly to terminal, like the kill command.	- a complete list of signals can be displayed with the following command: kill -l		---	Making a process Hangup proof	---	- command line programs will respond to the HUP signal by terminating when its controlling terminal "hangs up" (i.e. closes or disconnects).	- to prevent this behaviour, we can launch the program with nohup command. 	- [me@linuxbox ~]$ nohup xlogo	---	Sending Signals to Multiple Processes with killall	---	- It's also possible to send signals to multiple processes matching a specified program or username by using the killall command.	- killall [-u user] [-signal] name...---Shutting Down the System---			- The process of shutting down the system involves the orderly termination of all the processes on the system	- halt, poweroff, reboot and shutdown	- halt, poweroff, reboot - can be used without command line options. [me@linuxbox ~]$ sudo reboot	- shutdown is the general-purpose command that can do all of them. [me@linuxbox ~]$ sudo shutdown -h now--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- The Environment -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- shell maintains a body of information during our shell sessions called environment.- most programs store program settings in configuration files but some programs also look for values in environment to adjust its behaviour.- we will work with following commands,printenvsetexportaliassource---what is stored in the environment---	- shell stores basic two types of data, environment variable and shell variables	- shell variables are bits of data placed there by the current instance of the bash and environment variable are everything else.		--- 	Examining the environment	---	- to see what stored in the env, we can use set command or printenv	- set will show both shell and environment variable 	- printenv will only display env variables	- 	[me@linuxbox ~]$ printenv USER		me	-	[me@linuxbox ~]$ set | less	- also possible to view the contents of a variable using the echo command 		[me@linuxbox ~]$ echo $HOME		/home/me	---	How is the environment established?	---	- when we login, bash reads a series of configuration scripts called startup files, which defines environment shared by all users.	- this is followed by more startup files in our home directory that define our personal env.	- the exact sequence depends on the shell session being started,		1. a login shell - A login shell session is the one in which we are prompted for username and password.		2. a non-login shell - A non-login shell session typically occurs when we launch a terminal session in GUI with our terminal session.	- login shell reads one ore more startup files	/etc/profile 	- a global configuration script that applied to all users.	~/.bash_profile	- a user's personal startup file. can be used to extend or override settings in global configuration script	~/.bash_login	- if ~/.bash_profile is not available then bash attempts to read this script	~/.profile	- if neither ~/.bash_profile nor ~/.bash_login is found, bash attempts to read this file		- non-login shell sessions read the startup files. In additional to reading the startup files, non-login shells inherit env variables from parent process.		/etc/bash.bashrc - a global configuration script that applies to all users.	~/.bashrc	 - A user's personal startup file. It can be used to extend or override settings in the global configuration script.	- Personal bin Directory in Linux $HOME is your home directory (e.g., /home/user). 	- By convention, creating a bin folder inside it ($HOME/bin) lets you store personal scripts and programs.	- To make the shell recognize it, add to your PATH: export PATH=$PATH:$HOME/bin	- Now any script placed in ~/bin can be run like a normal command (e.g., myscript) without typing its full path.	- The shell searches directories in PATH in order, so the first match is executed.	---	Exploring how child processes inherit their environments	---	-  a child process cannot alter the environment of its parent. When a child process terminates, it takes its environment with it.	---Modifying the Environment---	---	Which Files Should We Modify?	---	- As a general rule, to add directories to your PATH or define additional environment variables, we need to place the changes in .bash_profile (ubuntu uses .profile)	- for everything else, place the changes in .bashrc	---	Using a Text Editor	---	- Text editors are invoked from the command line by typing the name of the editor followed by the name of the file we want to edit.	- If the file does not already exist, the editor will assume that we want to create a new file.	- Ex:	[me@linuxbox ~]$ gedit some_file		---	Activating our changes 	---	- changes made to .bashrc file will only take effect until we close our terminal session and start a new one. 	- because .bashrc is only read at the beginning of a session.	- we can force bash to reread the modified .bashrc file with the following command: [me@linuxbox ~]$ source ~/.bashrc	- The source command (which can be abbreviated as .) is a shell builtin that reads a file directly into the current shell---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- customizing the prompt -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------	---	Anatomy of a prompt	---	- Our default prompt looks like this [me@linuxbox ~]$	- it contains our username, our hostname and our working directory	- the prompt is defined by an environment variable named PS1 (Short for prompt string 1)	- we can see the contents of the PS1 with the echo command	 	[me@linuxbox ~]$ echo $PS1		[\u@\h \W]\$	- \u or \h or \w are escape characters used in shell prompts and they are a list of these.	- we can use this and customize our shell prompts		---	Trying Some Alternative Prompt Designs	---	- before changing the prompt design lets take a backup by creating a new variable and assign the value of PS1		[me@linuxbox ~]$ ps1_old="$PS1"	- we can restore it back by reversing the process [me@linuxbox ~]$ PS1="$ps1_old"	- ex: 	[me@linuxbox ~]$ PS1=	- ex:	PS1="\$ "	- ex:	$ PS1="\A \h \$ "		17:33 linuxbox $	- ex:	17:37 linuxbox $ PS1="<\u@\h \W>\$ "		<me@linuxbox ~>$		---	Adding color 	---	- Most terminal emulator respond to certain non-printing character sequence to control sequences to control such things as character attributes 		 (such as color, bold text, and the dreaded blinking text) and cursor position.	- Character color is controlled by sending the terminal emulator an ANSI escape code embedded in the stream of characters to be displayed.	- the control code does not "print out" on the display, rather it is interpreted by the terminal as an instruction.	- the \[ and \] are used to encapsulate non-printing characters.	- ANSI escape code begins with an octal 033 (code generated by Esc key ), followed by an optional character attribute, followed by an instruction	- Ex: \033[0;30m code to set the text color to normal (attribute = 0), black text	- Table 13- 2: Escape Sequences Used to Set Text Colors		Sequence 	Text Color 	Sequence 	Text Color		\033[0;30m 	Black 		\033[1;30m 	Dark gray		\033[0;31m 	Red 		\033[1;31m 	Light red		\033[0;32m 	Green 		\033[1;32m 	Light green		\033[0;33m 	Brown 		\033[1;33m 	Yellow		\033[0;34m 	Blue 		\033[1;34m 	Light blue		\033[0;35m 	Purple 		\033[1;35m 	Light purple		\033[0;36m 	Cyan 		\033[1;36m 	Light cyan		\033[0;37m 	Light gray 	\033[1;37m 	White		---	Moving the cursor	---	- Escape codes can be used to position the cursor. 	- This is commonly used to provide a clock or some other kind of information at a different location on the screen, such as in an		upper corner each time the prompt is drawn.		---	Saving the Prompt	---	- We can make the prompt permanent by adding it to our .bashrc file	- we need to add the changes to the file			PS1="\[\033[s\033[0;0H\033[0;41m\033[K\033[1;33m\t\033[0m\033[u\] <\u@\h \W>\$ "		export PS1----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  Package Management --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- Package Management is a method of installing and maintaining software	---	package files	---	- the basic unit of software in a packaging system is the package file.	- a package file is a compressed collection of files that comprise of the software package	- a package may consist of numerous program and data files that support the programs	- in addition to that, the package files can include meta data about the package - like text description or pre - and post - installation scripts.	- package file are created by a person known as a package maintainer	- The package maintainer gets the software in source code form from the upstream provider (the author of the program), compiles it,		and creates the package metadata and any necessary installation scripts		---	Repositories	---	- Packages are made available to the users of a distribution in central repositories that may		contain many thousands of packages, each specially built and maintained for the distribution		---	Dependencies	---	- program are seldom "standalone", rather than they rely on the presence of other software components to get their work done.	- common activities like input/output, are handled by routines and are stored in shared libraries, which provide essentials service.	- Modern package management systems provide dependency resolution to ensure the dependencies are installed while installing a package.	---	High and Low-level Package Tools	---	- Low level tools which handle tasks such as installation and removing package files	- high level tools that perform metadata searching and dependency resolution	- Table 14- 2: Packaging System Tools		Distributions 		Low-Level Tools 	High-Level Tools		Debian style 		dpkg 			apt, apt-get,aptitude		Fedora, Red Hat		Enterprise Linux, 	rpm 			dnf, yum		CentOS		---Common Package Management Tasks---		---	Finding a Package in a Repository	---	- 	Style 		Command(s)		Debian 		apt update; apt search search_string		Red Hat 	dnf search search_string	---		Installing a Package from a Repository	---	- 	Style 		Command(s)		Debian 		apt update; apt install package_name		Red Hat 	dnf install package_name	---	Installing a Package from a Package File	---	- If a package file has been downloaded from a source other than a repository, 		it can be installed directly (though without dependency resolution) using a low-level tool	- Table: Low-Level Package Installation Commands		Style 		Command(s)		Debian 		dpkg -i package_file		Red Hat 	rpm -i package_file	---	Removing a Package	---	- Table: Package Removal Commands		Style 		Command(s)		Debian 		apt remove package_name		Red Hat 	dnf erase package_name	---	Updating Packages from a Repository	---	- Table: Package Update Commands		Style 		Command(s)		Debian 		apt update; apt upgrade		Red Hat 	dnf update	---	Upgrading a Package from a Package File	---	- If an updated version of a package has been downloaded from a non-repository source, it		can be installed, replacing the previous version	- Table: Low-Level Package Upgrade Commands		Style 		Command(s)		Debian 		dpkg -i package_file		Red Hat 	rpm -U package_file	---	Listing Installed Packages	---	- Table: Package Listing Commands		Style 		Command(s)		Debian 		dpkg -l		Red Hat 	rpm -qa	---	Determining Whether a Package is Installed	---	- Table: Package Status Commands		Style 		Command(s)		Debian 		dpkg -s package_name		Red Hat 	rpm -q package_name	---	Displaying Information About an Installed Package	---	- Table: Package Information Commands		Style 		Command(s)		Debian 		apt show package_name		Red Hat 	dnf info package_name	---	Finding Which Package Installed a File	---	- Table: Package File Identification Commands		Style 		Command(s)		Debian 		dpkg -S file_name		Red Hat 	rpm -qf file_name- Compiling vs. Precompiled	Compiling: You take source code (C, C++, etc.) and run it through a compiler to create a binary (an executable).	Precompiled: Somebody else has already done that compiling step for you and gives you the ready-to-run binary.	So a precompiled package is just software that’s already built into a format your Linux system can install immediately.- static vs. dynamic precompiled packages	1. Static linking 		When a program is statically compiled, all the libraries it needs are built directly into the executable.		So the program is a stand-alone binary — it doesn’t depend on external library files being present on your system.	2. Dynamic linking		When a program is dynamically compiled, it does not include all libraries inside the binary.		Instead, it relies on shared libraries (like .so files in /lib or /usr/lib) already installed on your system.----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  	Storage Media 	----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------● mount – Mount a file system● umount – Unmount a file system● parted – Partition manipulation program● mkfs – Create a file system● fsck – Check and repair a file system● dd – Convert and copy a file● genisoimage – Create an ISO 9660 image file● wodim – Write data to optical storage media● sha256sum – Compute and check SHA256 checksums---Mounting and Unmounting Storage Devices---	- the first step in managing a storage device is attaching the device to the file system tree. This process is called mounting.	- this allows the device to interact with the operating system	- Linux, maintain a single file system tree with devices attached at various points		- A file named /etc/fstab (short for “file system table”) lists the devices (typically		hard disk partitions) that are to be mounted at boot time	- Ex: LABEL=/12 	/ 	ext4 	defaults 	1 1	- each line of the file consists of six fields		Table: /etc/fstab Fields			Field 		Contents 		Description		1		Device			Traditionally, Linux identified drives by their device file in /dev. If you unplug drives or boot differently, what 							used to be /dev/sda1 might suddenly become /dev/sdb1. To solve this, modern Linux systems use labels or UUIDs		2		Mount point		The directory where the device is attached to the file system tree.  			3		File system type	Linux allows many types of file systems to be mounted. Most common ext4 but supports FAT16 (msdos), FAT32 (vfat), 							NTFS (ntfs), CD-ROM (iso9660), etc.		4		Options			File systems can be mounted at any various options. we can mount it as read only.		5		Frequency		A single number that specifies if and when a file system is to be backed up with the dump command.		6		Order			A single number that specifies in what order file systems should be checked with the fsck command		---	Viewing a List of Mounted File Systems	---	- the mount command is used to mount file systems.	- entering command without an argument will display a list of file systems currently mounted.	- 	[me@linuxbox ~]$ mount		/dev/sda2 on / type ext4 (rw)	- the format of the listing is as follows: device on mount_point type file_system_type (options)	- to unmount the drive and remount it at another location in the file system tree we become superuser.	- we use umount command to unmount the drive.	- 	[me@linuxbox ~]$ sudo -i		[sudo] password for me:		[root@linuxbox ~]# umount /dev/sdc	- we can create a new mount point or use an existing one( empty or non-empty ).	- if we mount a device on a non-empty directory, we will not be able to see the directory's previous contents until you unmount the device	- a mount point is a directory simply a directory somewhere on the file system tree.	- we can mount the flash drive at the new mount point, the -t option is used to specify the file system type		[root@linuxbox ~]# mount -t vfat /dev/sdc /mnt/flash	- Why Unmounting a Drive is Important?		Linux uses buffers and cache to speed up disk operations.		When you save or copy files, data may first be written to RAM (buffer/cache) and only later flushed to the actual drive.		If you remove the drive without unmounting, some data may still be in memory and not yet on the disk → risk of data loss or corruption.		Unmounting forces the OS to flush all pending writes from buffer/cache to the device and safely close the filesystem	---	Determining Device Names 		---	- lets list the contents of the contents of the /dev to list some naming pattern	- Table: Linux Storage Device Names		Pattern		Device		/dev/fd*	floppy disk		/dev/hd*	IDE (PATA) disks on older systems		/dev/sd*	SCSI disks. On modern Linux systems, the kernel treats all disklike devices (including PATA/SATA hard disks, flash drives, and				USB mass storage devices such as portable music players and digital cameras) as SCSI disks		/dev/lp*	printers		/dev/sr*	optical drivers(CD/DVD readers and burners)	- we often see symbolic links such as /dev/cdrom. /dev/dvd and /dev/floppy which points to the actual device files	- we can use the following technique to determine how the removable device is named when it is attached	- first start realtime view of the /var/log/messages or /var/log/syslog file 		[me@linuxbox ~]$ sudo tail -f /var/log/syslog	- On modern systemd-based systems use this command to follow the systemd journal:		[me@linuxbox ~]$ sudo journalctl -f	- The last few lines of the listing will be displayed and then will pause	- plug in the removable device and the kernel will immediately probe it	- there another way we can do this using lsblk	- this command list all the block devices attached to the system regardless of if they are mounted or not	---creating a new file system---	---	Manipulating Partitions with parted		---	- parted is one of the host programs that allow us to interact directly with disk-like devices at a very low level	- we can use lsblk to get its name	- with parted, we can edit, delete, and create partitions on the device.	- To work with our hard drive, we must first unmount it (if needed) and then invoke the parted program as follows:		[me@linuxbox ~]$ sudo umount /dev/sdd1		[me@linuxbox ~]$ sudo parted /dev/sdd	- the first thing to do is examine the exsisting partition layout and we do it by entering the print command	- to delete the current partition we use rm command		(parted) rm 1	- to create new partition we use mkpart command		(parted) mkpart		Partition type? primary/extended? primary		File system type? [ext2]? ext4		Start? 1		End? 120000	- When creating a partition on this disk (which has a MBR, master boot record style partition table) we specify either a primary or extended partition followed by the start and end		of the partition in the default one megabyte increments.	- we use quit to exit the parted program		---	Creating a new file system with mkfs	---	- once partition is done we need to create (format) the new file system on to the drive.	- we use mkfs which can create file systems in a variety of problems.	- To create the ext4 file system on the drive, we use the -t option to specify the ext4 file system type, followed by a descriptive volume label,		and the name of the device containing the partition we want to format.	- [me@linuxbox ~]$ sudo mkfs -t ext4 -L EXT4_Disk /dev/sdd1	- to create NTFS partition.		[me@linuxbox ~]$ sudo mkfs -t ntfs --quick -L NTFS_Disk /dev/sdd2	- --quick option to skip the bad block checking because that takes a long time to perform---Testing and Repairing File Systems---	- A file named /etc/fstab (short for “file system table”) lists the devices (typically		hard disk partitions) that are to be mounted at boot time	- Ex: LABEL=/12 	/ 	ext4 	defaults 	1 1	- each time system boots, it routinely checks the integrity of the file systems before mounting them	- the last number in each fstab entry specifies the order in which the devices has to be checked	- Devices with a zero as the last digit are not routinely checked.	- in addition to integrity of file systems, fsck also used to repair corrupt file system and the recoverd portion is placed in the lost+found directory, 		located in the root of the file system.---moving data directly to and from devices---	- The dd program performs the task of clonning devices.	- It copies blocks of data from one place to another. 	- It uses a unique syntax (for historical reasons) and is usually used this way:		dd if=input_file of=output_file [bs=block_size [count=blocks]]---Verifying data---	- to verify the integrity of the files we downloaded we use sha256sum, a modern replacement for an earlier program called md5sum	- [me@linuxbox ~]$ sha256sum -b linuxmint-22-cinnamon-64bit.iso		7a04b54830004e945c1eda6ed6ec8c57ff4b249de4b331bd021a849694f29b8f *linuxmint-22-cinnamon-64bit.iso	- The -b option tells sha256sum that we are looking at a binary file rather than text	- Another way we can check the file is to have sha256sum process the sha256sum.txt file to compare its checksums against		ones it generates from the files on the list	- [me@linuxbox ~]$ sha256sum -c --ignore-missing sha256sum.txt		linuxmint-22-cinnamon-64bit.iso: OK	- The -c option (short for “check”) invokes this mode while the --ignore-missing		option tells sha256sum not to complain that the files we didn’t download.----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  	Networking ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------● ping – Send an ICMP ECHO_REQUEST to network hosts● traceroute – Print the route packets trace to a network host● ip – Show / manipulate routing, devices, policy routing and tunnels● netstat – Print network connections, routing tables, interface statistics, masquerade connections, and multicast memberships● ftp – Internet file transfer program● curl - Transfer a URL● wget – Non-interactive network downloader● ssh – OpenSSH SSH client (remote login program)---Examining and monitoring the network---	---	ping	---	- the most basic networking command is ping	- The ping command sends a special network packet called an ICMP ECHO_REQUEST to a specified host	- Most network devices receiving this packet will reply to it, allowing the network connection to be verified	- [me@linuxbox ~]$ ping linuxcommand.org	- for security reasons, some systems are configured to block ICMP requests		---	traceroute	---	- traceroute program (some systems use similar tracepath program instead) lists all the "hops" network traffic takes to get from local system to the specified host	- [me@linuxbox ~]$ traceroute slashdot.org	- Due to some router configuration, network congession, firewalls, etc... we see ashterisks	- to overcome this, we can use -T or -I options	---	ip	---	- the ip program is a multi purpose network configuration tool that makes the full range of networking features available in modern linux kernel	- it replaces the earlier and now deprecated ifconfig program	- ip program is used to examine various network setting and statistics	- 	[me@linuxbox ~]$ ip address show		1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000		 link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 		 inet 127.0.0.1/8 scope host lo 		  valid_lft forever preferred_lft forever 		 inet6 ::1/128 scope host noprefixroute 		 valid_lft forever preferred_lft forever		2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000 		 link/ether 00:26:6c:26:67:bf brd ff:ff:ff:ff:ff:ff 		 inet 192.168.1.223/24 brd 192.168.50.255 scope global dynamic noprefixroute enp1s0		 valid_lft 82366sec preferred_lft 82366sec		 inet6 fe80::226:6cff:fe26:67bf/64 scope link noprefixroute		 valid_lft forever preferred_lft forever		3: wlp2s0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN group default qlen 1000		 link/ether 06:8a:59:f4:f6:d3 brd ff:ff:ff:ff:ff:ff permaddr		24:ec:99:46:aa:1e	- in the example above, we see that our test system has three network interfaces	- the first, called lo, is the loopback interface, a virtual interface that the system uses to “talk to itself”	- the second, called enp1s0, is an Ethernet interface (en = Ethernet)	- the third called wlp2s0 is a wireless interface (wl = wireless)	- When performing casual network diagnostics, the important things to look for are the		presence of the phrase state UP in the first line for the interface, indicating that it is enabled, and the presence of a 		valid IP address in the inet field on the third line. For systems using Dynamic Host Configuration Protocol (DHCP), a valid IP address in this field		will verify that the DHCP is working	-	[me@linuxbox ~]$ ip route show		default via 192.168.1.1 dev enp1s0 proto dhcp src 192.168.50.223		metric 100		169.254.0.0/16 dev enp1s0 scope link metric 1000		192.168.1.0/24 dev enp1s0 proto kernel scope link src 192.168.1.223		metric 100	- In this simple example, we see a typical routing table for a client machine on a local area network (LAN) behind a firewall/router	- IP addresses that end in zero refer to networks rather than individual hosts, so this destination means any host on the LAN can be reached directly	- 169.254.0.0 and 192.168.1.0. the 192.168.1.0 network is our LAN but 169.254.0.0 is a piece of network called Automatic Private IP Addressing (APIPA)	- It is used to automatically assign an IP address when a DHCP server is unavailable.	- The first line contains the destination default meaning any traffic destined for a network that is not otherwise listed in the table to this address	- The ip command is a complicated program with many options and commands. The command syntax consists of:		ip [-options] object [command]	- we used objects address and route	- As a convenience, ip allows object names to be shortened to a single character	- since the default command is show, we can shorten the commands to ip a and ip r and get identical results.	---Transporting Files Over a Network---	---	ftp	---	- ftp gets its name from the protocol it uses, the File Transfer Protocol	- FTP was once the most widely used method of downloading files over the Internet	- ftp is used to communicate with FTP servers, machines that contain files that can be uploaded and downloaded over a network.	- FTP (in its original form) is not secure because it sends account names and passwords in cleartext	- Because of this, almost all FTP done over the Internet is done by anonymous FTP servers	- An anonymous server allows anyone to log in using the login name “anonymous” and a meaningless password		---	lftp – A Better ftp	---	- It works much like the traditional ftp program but has many additional convenience features	- including multipleprotocol support (including HTTP), automatic retry on failed downloads, background processes, tab completion of path names, and many more		---	curl - Transfer a URL	---	- Another popular file transfer program is curl	- Its most basic usage works like this:		[me@linuxbox ~]$ curl https://linuxcommand.org	- we specify the URL and curl downloads the first page of the URL and outputs it to standard output.	- multiple URLs can be specified	- curl supports most network protocols including HTTP, HTTPS, FTP, IMAP, POP3, SFTP, SMB, and others	- Table: Common curl options		Option 			Description		-o, --output file 	Send output to the specified file rather than standard output.		-O, --remote-name 	Like -o but name local file the same as the name of the remote file.		-s, --silent 		Suppress the progress meter and error messages.		-u, --proxy-user	Specify a user name/password combination.		user:password		-v, --verbose 		Display verbose messages as it executes.	---	wget - Non-interactive network downloader	---	- Another command-line program for file downloading is wget	- It is useful for downloading content from both web and FTP sites	- Single files, multiple files, and even entire sites can be downloaded	- The program's many options allow wget to recursively download, download files in the background (allowing you to log off but continue downloading), 		and complete the download of a partially downloaded file---Secure Communication with Remote Hosts---	---	ssh	---	- to address the issue of rlogin and telnet, a new protocal called secure shell (ssh) was developed	- SSH solves the two basic problems of secure communication with a remote host		1. it authenticates that the remote host is who it says it is (thus preventing so-called man-in-the-middle attacks)		2. it encrypts all of the communications between the local and remote hosts	- SSH consists of two parts: Server and client		an SSH server runs on the remote host, listening for incoming connections, by default, on port 22		while an SSH client is used on the local system to communicate with the remote server	- Most Linux distributions ship an implementation of SSH called OpenSSH from the OpenBSD project	- To enable a system to receive remote connections, it must have the OpOpenSSH-server package installed, configured and running	- (if the system either is running or is behind a firewall) it must allow incoming network connections on TCP port 22	- The SSH client program used to connect to remote SSH servers is called, appropriately enough, ssh	- To connect to a remote host named remote-sys, we would use the ssh client program like so:		[me@linuxbox ~]$ ssh remote-sys		The authenticity of host 'remote-sys (192.168.1.4)' can't be		established.		RSA key fingerprint is		41:ed:7a:df:23:19:bf:3c:a5:17:bc:61:b3:7f:d9:bb.		Are you sure you want to continue connecting (yes/no)?	- The first time the connection is attempted, a message is displayed indicating that the authenticity of the remote host cannot be established.	- This is because the client program has never seen this remote host before	- It is also possible to connect to remote systems using a different username	- example, if the local user “me” had an account named “bob” on a remote system, user me could log in to the account bob on the remote system as follows:		[me@linuxbox ~]$ ssh bob@remote-sys		bob@remote-sys's password:		Last login: Sat Aug 30 13:03:21 2024		[bob@remote-sys ~]$	- As stated earlier, ssh verifies the authenticity of the remote host. If the remote host does not successfully authenticate, the following message appears:	- 	[me@linuxbox ~]$ ssh remote-sys		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@		@ WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED! @		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@		IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!		Someone could be eavesdropping on you right now (man-in-the-middle		attack)!		It is also possible that a host key has just been changed.		The fingerprint for the ECDSA key sent by the remote host is		SHA256:9uhOXHzPz0AjIs0ZDanNYfv7ksUO4Mjy5pR4kUTSKkA.		Please contact your system administrator.		Add correct host key in /home/me/.ssh/known_hosts to get rid of this		message.		Offending ECDSA key in /home/me/.ssh/known_hosts:42		 remove with:		 ssh-keygen -f "/home/me/.ssh/known_hosts" -R "remote-sys"		Host key for remote-sys has changed and you have requested strict		checking.		Host key verification failed.	- This message is caused by one of two possible situations		- man-in-the-middle attack		- more likely culprit is that the remote system has been changed somehow. ex, its operating system or SSH server has been reinstalled	- once determined that the message is because of a benign cause, it is safe to correct the problem on the client side	- This is done by using the suggestion provided by the warning message: ssh-keygen -f "/home/me/.ssh/known_hosts" -R "remote-sys"	- Failing that, we can use a text editor (vim perhaps) to remove the obsolete key from the ~/.ssh/known_hosts file. 	- Offending key in /home/me/.ssh/known_hosts:42  This means that the 42nd line of the known_hosts file contains the offending key	- Delete this line from the file, and the ssh program will be able to accept new authentication credentials from the remote system.	- Besides this, ssh allows us to execute a single command on a remote system	- ex: [me@linuxbox ~]$ ssh remote-sys 'ls * > dirlist.txt'	---	scp and sftp	---	- The OpenSSH package also includes two programs that can make use of an SSH-encrypted tunnel to copy files across the network. 	- scp (secure copy) is used much like the familiar cp program to copy files	- The most notable difference is that the source or destination pathnames may be preceded with the name of a remote host, followed by a colon character	- 	[me@linuxbox ~]$ scp remote-sys:document.txt .		me@remote-sys's password:		document.txt 100% 5581 5.5KB/s 00:00		[me@linuxbox ~]$	- As with ssh, you may apply a username to the beginning of the remote host’s name if the desired remote host account name does not match that of the local system		[me@linuxbox ~]$ scp bob@remote-sys:document.txt .		- The second SSH file-copying program is sftp which, as its name implies, is a secure replacement for the ftp program	- sftp works much like the original ftp program that we used earlier; however, instead of transmitting everything in cleartext, it uses an SSH encrypted tunnel	- sftp has an important advantage over conventional ftp in that it does not require an FTP server to be running on the remote host. It requires only the SSH server	- 
+
+Shell?
+1. When we speak of the command line, we are really referring to the shell.
+2. The shell is a program that takes keyboard commands and passes them to the operating system to carry out.
+3. Almost all Linux distributions supply a shell program from the GNU Project called bash.
+
+Terminal Emulators?
+When using a graphical user interface (GUI), we need another program called terminal emulators to interact with the SHELL.
+KDE uses konsole and GNOME uses gnome-terminal, it's likely called simply "terminal" on our menu.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------- Navigation ------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+pwd - Print name of current working directory.
+cd - Change directory
+ls - list directory contents
+
+---
+Understanding the File System Tree
+---
+	- Like Windows, a Unix-like operating system such as Linux organizes its files in what is called a hierarchical directory structure.
+	- The first directory in the tree structure is called the root directory.
+	- Unix-like systems such as Linux always have a single file system tree, regardless of how many drives or storage devices are attached to the computer.
+	- Storage devices are attached (or mounted) at various points on the tree.
+
+---
+The current working directory
+---
+	- The directory we are standing is called the current working directory.
+	- To display current working directory we use pwd ( print working directory )
+	- Ex: 	[me@linuxbox ~]$ pwd
+		/home/me
+	- When we log in to our system ( or start a terminal session ) our current working directory is set to our home directory.
+	- Each user is given its own home directory and it is the only place a regular user is allowed to write files.
+
+
+---
+Listing the contents of a Directory
+---
+	- To the content of the files and directory, we use ls command.
+	- Ex: 	[me@linuxbox ~]$ ls 
+		Desktop Documents Music Pictures Public Templates Videos
+
+---
+Changing the current working Directory
+---
+- Absolute Pathnames
+- Relative Pathnames
+
+	---
+	Absolute Pathnames
+	---
+	- An absolute pathname begins by the root directory and follows the tree branch by branch until the path to the desired directory or file is complete.
+	- Ex: 	[me@linuxbox ~]$ cd /usr/bin
+		[me@linuxbox bin]$ pwd
+		/usr/bin
+	
+	---
+	Relative Pathnames
+	---
+	- As absolute pathname starts from root directory and leads to its destination, a relative pathname starts from the working directory.
+	- It uses special notations such as "." (dot) and ".." (dot dot).
+	- The . notation refers to working directory and .. refers to working directory's parent directory.
+	- Ex:	[me@linuxbox bin]$ cd ..
+		[me@linuxbox usr]$ pwd
+		/usr
+	- Ex:	[me@linuxbox usr]$ cd ./bin
+		[me@linuxbox bin]$ pwd
+		/usr/bin
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------- Exploring the file system ------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+ls - list directory contents
+file - Determine file type
+less - view file contents
+
+	---
+	Options and arguments
+	---
+	- command are often followed by one or more options that modify their behaviour and further by one or more arguments, 
+		the items upon which the command acts
+	- command -options arguments
+	- most commands use options which consists of a single character preceded by a dash, ex, "-l"
+	- Ex: 	[me@linuxbox ~]$ ls -lt
+	- Many commands support long options, consisting of a word preceded by two dashes
+	- Ex: 	[me@linuxbox ~]$ ls -lt --reverse
+	- The most common ls options
+		Table 3- 1: Common ls Options
+		Option 		Long 		Option Description
+		-a 		--all 		List all files, even those with names that begin with a period, which are normally not listed (that is, hidden).
+		-A 		--almost-all 	Like the -a option above except it does not list . (current directory) and .. (parent directory).
+		-d 		--directory 	Ordinarily, if a directory is specified, ls will list the contents of the directory, not the 
+						directory itself. Use this option in conjunction with the -l option to see details about the 
+						directory rather than its contents.
+		-F 		--classify 	This option will append an indicator character to the end of each listed name. For example, a 
+						forward slash (/) if the name is a directory.
+		-h 		--human-readable In long format listings, display file sizes in human readable format rather than in bytes.
+		-l 				Display results in long format.
+		-r 		--reverse Display the results in reverse order. Normally, ls displays its results in ascending alphabetical order.
+		-S 				Sort results by file size.
+		-t 				Sort by modification time.
+	
+	---
+	A Longer Look at Long Format
+	---
+	- a long format provides a great deal or info
+	- consider this --> -rw-r--r-- 1 root root 3576296 2017-04-03 11:05 ubuntu.ogg
+
+	- -rw-r--r--  	--> 	Access rights to the file. 
+				The first character indicates the type of file. A leading means a regular file while a "d" indicates a directory.
+				The next three character indicates access rights for the file owner.
+				the next three character indicates access right for the members of the file's group.
+				the final three for everyone else.
+	- 1 		-->	File's number on hard links.
+	- root		-->	the user name of the file owner
+	- root 		-->	the name of the group the owns the file.
+	- 3576296	--> 	size of the file in bytes.
+	- 2017-04-03 11:05 -->	The date and time of file's last modification.
+	- ubuntu.ogg	--> 	name of the file.
+				
+	---
+	Determining the file type with file
+	---
+	- We use file command to determine the file's type.
+	- syntax: file filename
+	- When invoked, the file command will print a brief description of the file's contents.
+	- Ex: 	[me@linuxbox ~]$ file picture.jpg
+		picture.jpg: JPEG image data, JFIF standard 1.01
+
+	---
+	viewing file contents with less
+	--- 
+	- the less command is a program to view text files.
+	- The less command is used like this: less filename
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------- Manipulating Files and Directories ---------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+- Wildcards: shell feature. using wildcards, also known as globbing.
+ 	- helps to select filenames based on characters.
+ 	- Wildcard table:
+ 		- * --> matches any characters.
+ 		- ? --> matches a single characters.
+ 		- [characters] --> matches any character that is a member of set characters.
+ 		- [!characters] or [^characters] --> Matches any character that is not a member of the set characters.
+ 		- [[:class:]] --> Matches any characters that is a member of the specified class.
+ 	- commonly used character classes
+ 		- [:alnum:] --> Matches any alphanumerical characters.
+ 		- [:alpha:] --> Matches any alphabetic character.
+ 		- [:digit:] --> Matches any numeral
+ 		- [:lower:] --> Matches any lowercase letter.
+ 		- [:upper:] --> Matched any uppercase letter.
+
+---
+- mkdir: Create directories.
+
+---
+- cp: Copy files and directories.
+ 	- cp can be used in 2 different ways.
+ 		- cp item1 or item2 --> copy file or directory item1 to the file or directory item2
+ 		- cp item... directory --> copies multiple items (either files or directories) into a directory.
+
+ 	- Useful cp options.
+
+ 		- -a --archive  	Copy the files and directories and all of their attributes, including ownerships and
+ 					permissions. Normally, copies take on the default attributes of the user performing the
+ 					copy.
+ 		- -i --interactive 	Before overwriting the existing file, prompt the user for confirmation.
+ 		- -r --recursive 	Recursively copy directories and their contents. This option (or the -a option) is required when
+ 					copying directories.
+ 		- -u --update 		When copying files from one directory to another, only copy files that either don't exist or
+ 					are newer than the existing corresponding files, in the destination directory. This is useful when
+ 					copying large numbers of files as it skips files that don't need to be copied.
+ 		- -v --verbose 		Display informative messages as the copy is performed.
+
+---
+- mv: move and rename files.
+ 	- Move performs both file moving and file renaming.
+ 	- mv can be used in 2 different ways.
+ 		- mv item1 or item2 --> move file or directory item1 to the file or directory item2
+ 		- mv item... directory --> move multiple items (either files or directories) into directory.
+
+ 	- Useful cp options.
+
+ 	- 	-i --interactive 	Before overwriting an existing file, prompt the user for confirmation. If this option is not specified, mv will silently overwrite files.
+ 		- -u --update 		When moving files from one directory to another, only move files that either don't exist,
+ 					or are newer than the existing corresponding files in the destination directory.
+ 		- -v --verbose 		Display informative messages as the move is performed.
+
+---
+- rm: Remove Files and Directories.
+ 	- The rm command is used to remove (delete) files and directories
+ 	- rm item... --> where item is one or more directory.
+ 
+ 	- Useful cp options.
+
+ 		-i --interactive 	Before deleting an existing file, prompt the user for confirmation. If this option is not specified,
+ 					rm will silently delete files.
+ 		-r --recursive 		Recursively delete directories. This means that if a directory being deleted has subdirectories,
+ 					delete them too. To delete a directory, this option must be specified.
+ 		-f --force 		Ignore nonexistent files and do not prompt. This overrides the --interactive option.
+ 		-v --verbose 		Display informative messages as the deletion is performed.
+
+---
+- ln: Create links
+ 	- this command is used to create either hard or symbolic links.
+ 	- it is used in two ways
+ 		- ln file link --> this create a hard link.
+ 		- ln -s item link --> this creates a symbolic link where item is either file or directory.
+
+ 	- Hard links:
+ 		- Original way of creating links, compared to symbolic links, which are more modern.
+ 		- In Linux/Unix file systems (like ext4, XFS, etc.), files are not stored directly by their names.
+ 		- A file actually consists of data blocks (the contents of the file) and an inode (a data structure that stores metadata like file size, permissions, and pointers to data 			blocks).
+ 		- A hard link is basically a directory entry that maps a file name to an inode.
+ 		- By default, every file has a single hard link that gives the file its name.
+ 		- Hard links have two important limitations:
+ 			1.	A hard link cannot reference a file outside its own file system. This means a link
+ 				cannot reference a file that is not on the same disk partition as the link itself.
+ 			2. 	A hard link may not reference a directory.
+
+ 	- Symbolic links:
+ 		- Symbolic links were created to overcome the limitations of hard links.
+ 		- Symbolic links work by creating a special type of file that contains a text pointer to the referenced file or directory.
+ 		- In this regard, they operate in much the same way as a Windows shortcut, though of course they predate the Windows feature by many years.
+ 
+
+-----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------ Working with Commands ------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+What Exactly Are Commands? It might be any of the following
+
+ 	- An executable program: like all those files in /usr/bin.
+ 	- A command built into the shell itself: Bash supports a number of commands internally called shell built-ins.
+ 	- A shell function: Shell functions are miniature shell scripts incorporated into the environment.
+ 	- An alias: Aliases are commands that we can define ourselves, built from other commands.
+
+---
+Identifying commands.
+---
+
+ 	- It is often useful to know exactly which of the four kinds of commands is being used and Linux provides a couple of ways to find out.
+
+ 	- type: Display a Command's Type
+
+ 		- The shell builtin that displays the kind of command the shell will execute, given a particular command once.
+ 		- It works like this: type command --> "command" is the command we want to examine.
+
+ 	- which: Display an Executable's Location
+
+ 		- Sometimes there is more than one version of an executable program installed on a system. To determine the exact location of a given executable,
+ 		  the which command is used.
+ 		- ex: 	[me@linuxbox ~]$ which ls
+ 			/usr/bin/ls
+ 		- Imp: which only for executable programs, not bulletins nor alias that are substitutes for actual executable programs.
+
+---
+Getting the command's Documentation
+---
+
+ 	- help: get help for shell builtins
+ 		- bash has built-in facility available for each of the shell builtins.
+ 		- ex: 	[me@linuxbox ~]$ help cd
+ 			cd: cd [-L|[-P [-e]] [-@]] [dir]
+ 			Change the shell working directory.
+ 			Change the current directory to DIR. The default DIR is the
+ 			value of the HOME shell variable.
+ 			The variable CDPATH defines the search path for the directory
+ 			containing DIR. Alternative directory names in CDPATH are
+ 			separated by a colon (:). A null directory name is the same as
+ 			the current directory. If DIR begins with a slash (/), then
+ 			CDPATH is not used.
+ 			If the directory is not found, and the shell option `cdable_vars'
+ 			is set, the word is assumed to be a variable name. If that
+ 			variable has a value, its value is used for DIR.
+ 			Options:
+ 				-L force symbolic links to be followed: resolve symbolic
+ 				links in DIR after processing instances of `..'
+ 				-P use the physical directory structure without following
+ 				symbolic links: resolve symbolic links in DIR before
+ 				processing instances of `..'
+ 				-e if the -P option is supplied, and the current working
+ 				directory cannot be determined successfully, exit with
+ 				a non-zero status
+ 				-@ on systems that support it, present a file with extended
+ 				 attributes as a directory containing the file attributes
+ 				 The default is to follow symbolic links, as if `-L' were
+ 				 specified. `..' is processed by removing the immediately previous
+ 				 pathname component back to a slash or the beginning of DIR.
+ 				 Exit Status:
+ 					 Returns 0 if the directory is changed, and if $PWD is set
+ 					 successfully when -P is used; non-zero otherwise.
+ 		- A note on notation:   When square brackets appear in the description of a command's syntax,
+ 					they indicate optional items. A vertical bar character indicates mutually exclusive
+ 					items.
+ 					In the case of the cd command above: cd [-L|[-P[-e]]] [dir]
+ 					This notation says that the command cd may be followed optionally by either a “-L” or a
+ 					“-P” and further, if the “-P” option is specified the “-e” option may also be included followed by the optional argument “dir”.
+
+ 	- --help -> Display usage information
+ 		    Many executable program support "--help" option that displays a description of the command's supported syntax and options.
+ 		    -ex: [me@linuxbox ~]$ mkdir --help
+
+ 	- man -> Display a program's Manual Page.
+ 		- Most executable program intended for command line use provide a formal piece of documentation called manual or man page.
+ 		- A special paging program called man is used to view them.
+ 		- syntax: man program
+
+ 	- apropos -> Display Appropriate commands.
+ 			- it is possible to search the list of man pages for possible matches based on a search item.
+ 			- ex: 	[me@linuxbox ~]$ apropos partition
+ 				output -> addpart(8) 		- simple wrapper around the "add partition"...
+ 				explanation -> first field is the name of the man page, second field shows the section.
+ 			- Note: man command the "-k" option performs the same function as apropos.
+
+ 	- whatis -> Display one-line manual page description.
+ 			- whatis program displays the name and a one-line description of a man page matching a specific keyword.
+ 			- ex: 	[me@linuxbox ~]$ whatis ls
+ 				ls (1) - list directory contents
+ 
+ 	- info -> The GNU Project provides an alternative to man pages for their programs, called “info.”
+ 		  Info manuals are displayed with a reader program named, appropriately enough, info.
+ 		  Info pages are hyperlinked much like web pages.
+
+----
+ Creating our own command
+---- 
+
+	- syntax: alias name='string'
+	- After the command alias, we give alias a name followed immediately (no whitespace
+	  allowed) by an equal sign, followed immediately by a quoted string containing the meaning to be assigned to the name.
+	- Ex: [me@linuxbox ~]$ alias foo='cd /usr; ls; cd -'
+	- To remove an alias, the unalias command is used, like so: [me@linuxbox ~]$ unalias foo
+	- To see all the aliases defined in the environment, use the alias command without arguments.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------ Redirection ----------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Introduce the following commands,
+
+1. cat - concatenate files
+2. sort - sort lines of text
+3. uniq - Report or omit repeated lines
+4. grep - Print lines matching a pattern
+5. wc - print newline, word and byte counts for each file
+6. head - Output the first part of a file
+7. tail - output the last part of a file
+8. tee - Read from standard input and write to standard output and files
+
+---
+Standard input, output and error
+---
+
+	- Keeping with the Unix theme that "everything is a file" programs such as ls send their results to a special file called standard output (often expressed as stdout)
+	  and their status message to standard error (stderr).
+	- By default, both stdout and stderr are linked to screen and not saved to file.
+	- many programs take input from a facility called standard input (stdin), which is by default attached to the keyboard.
+	- Standard error messages are sent to standard error ( stderr ).
+	- with I/O redirection we can change where the input comes and output goes.
+
+---
+Redirecting the standard output
+---
+	- To redirect standard output to another file instead of the screen, we use > redirection operator followed by the name of the file.
+	- Ex: [me@linuxbox ~]$ ls -l /usr/bin > ls-output.txt
+	- Note: when redirect operator is used ">" the destination file always overwritten.
+	- To redirect output without overwriting the file we need to use ">>" 
+	- Ex: [me@linuxbox ~]$ ls -l /usr/bin >> ls-output.txt
+
+---
+Group Commands
+---
+	- Scenario: imagine a situation where we want to execute a series of commands and send the results to a log file. 
+	- we can try this [me@linuxbox ~]$ command1; command2; command3
+	- Ex: [me@linuxbox ~]$ command1 > logfile.txt; command2 >> logfile.txt; command3 >> logfile.txt
+	- but we can also do this by creating a group command: [me@linuxbox ~]$ { command1; command2; command3; } > logfile.txt
+
+---
+Redirecting Standard Error
+---
+	- Redirecting standard error lacks the ease of a dedicated redirection operator.
+	- we referred first three file stream as standard input, output and error, the shell refer to them internally as file descriptor 0,1,2 respectively.
+	- shell provides a notation for redirecting file using file descriptor.
+	- since standard error is same as file descriptor number 2, we can redirect standard error as with the notation as 
+		[me@linuxbox ~]$ ls -l /bin/usr 2> ls-error.txt		
+		
+---
+Redirecting standard output and standard error to one file
+---
+	- there are two ways to do it: 
+		1. [me@linuxbox ~]$ ls -l /bin/usr > ls-output.txt 2>&1
+		2. [me@linuxbox ~]$ ls -l /bin/usr &> ls-output.txt
+	- We can also append the standard output and standard error streams to a single file like so:
+		[me@linuxbox ~]$ ls -l /bin/usr &>> ls-output.txt
+
+---
+Disposing of unwanted output
+---
+	- We can throw away the output to a special file called "dev/null"
+	- the file is a system device often referred to as bit bucket, which accepts input and does nothing with it.
+
+---
+Redirecting the standard input
+---
+	
+	cat - concatenate files
+	-----------------------
+	- the cat command reads one or more files and copies them to standard output like: cat [file...]
+	- cat is often used to display short files.
+	- since cat accepts more than one file as an argument, it can also be used to join files together.
+	- if cat is not given any arguments, it reads from standard input and since standard input is by default attached to the keyboard, 
+	  it will wait for user input. ctl-d to tell cat it has reached end of the file.
+	- cat copies standard input to standard output, this behaviour can be used to create short text files.
+	- Ex: 	[me@linuxbox ~]$ cat > lazy_dog.txt
+		The quick brown fox jumps over the lazy dog.
+	- In the above example, cat will accept the user input and place the input into the file. If the file does not exists the > operator will create one.
+	- To see our results, we can use cat to copy the file to stdout again.
+	- Ex: 	[me@linuxbox ~]$ cat lazy_dog.txt
+		The quick brown fox jumps over the lazy dog.
+	- we can redirecting standard input to cat as shown: 
+		[me@linuxbox ~]$ cat < lazy_dog.txt 
+		The quick brown fox jumps over the lazy dog.
+	- Using the "<" redirection operator we can change the source from standard input from the keyboard to the file lazy_dog.txt
+
+	Pipeline
+	-----------------------
+	- The capability of commands to read data from standard input and send to standard output is utilized by a shell feature called pipelines.
+	- Using the pipe operator | (vertical bar), the standard output of one command can be piped into standard input of another.
+	- command1 | command2
+
+		Filters
+		-----------------------
+		- Sort
+
+		Uniq - report or Omit repeated lines
+		-----------------------
+		- The uniq command is used in conjunction with sort.
+		- uniq accepts a sorted list of data either from standard input or a single filename argument and by default removes any duplicates from the list.
+		- Ex: [me@linuxbox ~]$ ls /bin /usr/bin | sort | uniq | less
+		- If we want to see the list of duplicates instead, we add the “-d” option to uniq like so:
+		- Ex: [me@linuxbox ~]$ ls /bin /usr/bin | sort | uniq -d | less
+
+		wc - Print line, word and byte count
+		-----------------------
+		- The wc (word count) command is used to display the number of lines, words, and bytes contained in a files.
+		- Ex: 	[me@linuxbox ~]$ wc ls-output.txt
+ 			7902 64566 503634 ls-output
+		- it prints lines, count and byte counts
+		- Like previous commands, if executed without a command line arguments, wc accepts standard input.
+
+		grep - Print lines matching a pattern
+		-----------------------
+		- grep is a powerful program used to find text pattern within the files. It's used like this,
+		- syntax: grep pattern [file...]
+		- when grep encounters a "pattern" in the file, it prints out the lines containing it.
+		- Ex: 	[me@linuxbox ~]$ ls /bin /usr/bin | sort | uniq | grep zip
+			bunzip2
+			bzip2
+			gunzip
+			gzip
+			unzip
+			zip
+			zipcloak
+			zipgrep
+			zipinfo
+			zipnote
+			zipsplit
+		- few handy options for grep
+			-i, causes grep to ignore case when performing the search
+			-l, causes grep to only output the names of the files containing text that matches the pattern.
+			-v, causes grep to print only lines that do not match the pattern.
+			-w, caused grep to only match whole words.
+ 
+		head/tail - Print First/Last Part of files
+		-----------------------
+		- head prints the first ten lines and tails command prints the last ten lines.
+		- Ex:	[me@linuxbox ~]$ head -n 5 ls-output.txt
+			total 343496
+			-rwxr-xr-x 1 root root 31316 2007-12-05 08:58 [
+			-rwxr-xr-x 1 root root 8240 2007-12-09 13:39 411toppm
+			-rwxr-xr-x 1 root root 111276 2007-11-26 14:27 a2p
+			-rwxr-xr-x 1 root root 25368 2006-10-06 20:16 a52dec
+
+			[me@linuxbox ~]$ tail -n 5 ls-output.txt
+			-rwxr-xr-x 1 root root 5234 2007-06-27 10:56 znew
+			-rwxr-xr-x 1 root root 691 2005-09-10 04:21 zonetab2pot.py
+			-rw-r--r-- 1 root root 930 2007-11-01 12:23 zonetab2pot.pyc
+			-rw-r--r-- 1 root root 930 2007-11-01 12:23 zonetab2pot.pyo
+			lrwxrwxrwx 1 root root 6 2016-01-31 05:22 zsoelim -> soelims
+		
+		- These commands can be used in pipelines as well:
+		- Ex: [me@linuxbox ~]$ ls /usr/bin | tail -n 5
+		- "-n" options with head and tail allow us to cut an excerpt from the middle of the file.
+		- The -n option when used with head allows a negative value which causes all but the last n lines to be output. 
+			Similarly, the -n option with tail allows a plus sign causing all but the first n lines to be output. 
+		
+		tee - Read from Stdin and Output to Stdout and Files
+		-----------------------
+		- Linux provides a command called tee which creates a "tee" fitting on our pipe.
+		- The tee program reads standard input and copies to standard out ( allowing the data to continue down the pipeline) and to one or more files.
+		- Ex: [me@linuxbox ~]$ ls /usr/bin | tee ls.txt | grep zip
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------- Seeing the world as shell sees it --------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+echo – Display a line of text
+
+---
+Expansion
+---
+
+- Each time we type a command and press enter key, bash performs several substitution upon the text before it carries out our command.
+- The process is called expansion.
+- Ex: 	[me@linuxbox ~]$ echo *
+	Desktop Documents ls-output.txt Music Pictures Public Templates Videos
+- Explanation: 	Here the command should have printed * but it didn't. This is because when the Enter key is pressed, the shell automatically expands the qualifying
+		before the command is carried out, so the echo command never saw the *, only it's extended result. 
+
+
+	---
+	Pathname Expansion
+	---
+	- The mechanism by which wildcards work is called pathname expansion.
+	- Given a home directory looks lik this,
+		[me@linuxbox ~]$ ls
+		Desktop ls-output.txt Pictures Templates Documents Music Public Videos
+	- we can apply the expansion as:
+		ex1: 	[me@linuxbox ~]$ echo D*
+			Desktop Documents	
+		ex2:	[me@linuxbox ~]$ echo *s
+			Documents Pictures Templates Videos
+		ex3:	[me@linuxbox ~]$ echo [[:upper:]]*
+			Desktop Documents Music Pictures Public Templates Videos
+	
+	---
+	Tilde Expansion
+	---
+	- the tilde character (~) has a special meaning.
+	- When used at the beginning of a word, it expands into the name of the home directory of the named user or, if no user is named, the home directory of the current 		user.
+	- ex: 	[me@linuxbox ~]$ echo ~
+		/home/me
+
+	---
+	Arithmetic Expansion
+	---
+	- The shell allows arithmetic to be performed by expansion. 
+	- This allows us to use the shell prompt as a calculator.
+	- Ex: 	[me@linuxbox ~]$ echo $((2 + 2))
+		4
+	- It uses the following form: $((expression))
+	
+	---
+	Brace Expansion
+	---
+	- Perhaps the strangest expansion is called brace expansion.
+	- Ex1: 	[me@linuxbox ~]$ echo Front-{A,B,C}-Back
+		Front-A-Back Front-B-Back Front-C-Back
+	- Ex2:	[me@linuxbox ~]$ echo Number_{1..5}
+		Number_1 Number_2 Number_3 Number_4 Number_5
+	
+	---
+	Parameter Expansion
+	---
+	- It is a feature more powerful in shell scripts rather than the command line.
+	- Many of its capability has to do with small chunks of data and to give each chunks a name. Many such chunks, more properly called variables.
+	- For example, the variable USER contains user name. [me@linuxbox ~]$ echo $USER  --> me
+	- To see a list of available variables, try this: [me@linuxbox ~]$ printenv | less
+	
+	---
+	Command Substitution
+	---
+	- command substitution allows us to use the output of command as expansion.
+	- Ex: 	[me@linuxbox ~]$ echo $(ls)
+		Desktop Documents ls-output.txt Music Pictures Public Templates Videos
+	- Ex:	[me@linuxbox ~]$ ls -l $(which cp)
+		-rwxr-xr-x 1 root root 71516 2007-12-05 08:58 /bin/cp
+	- Entire pipelines can be used Ex: [me@linuxbox ~]$ file $(ls -d /usr/bin/* | grep zip)
+	- There is an alternate syntax for command substitution used by older shell programs that is also supported in bash. 
+		It uses backquotes instead of the dollar sign and parentheses. 
+	- Ex: 	[me@linuxbox ~]$ ls -l `which cp`
+		-rwxr-xr-x 1 root root 71516 2007-12-05 08:58 /bin/cp
+
+---
+Quoting	
+---	
+	- Time to learn how to control the expansion.
+	- Ex:	[me@linuxbox ~]$ echo this is a 	test
+		this is a test
+	- Explanation: word-splitting by the shell removed extra whitespace from the echo command's list of arguments.
+	- Ex: 	[me@linuxbox ~]$ echo The total is $100.00
+		The total is 00.00
+	- Explanation: parameter expansion substituted an empty string for the value of $1 because it was an undefined variable.
+	- Why Quoting?? --> The shell provides a mechanism called quoting to selectively suppress unwanted expansions
+
+	---
+	Double quotes
+	---
+	- If we place text inside double quotes, all the special characters used by the shell lose their special meaning and are treated as ordinary characters
+	- The exceptions are $, \ (backslash), and ` (back-quote). 
+	- This means that word-splitting, pathname expansion, tilde expansion, and brace expansion are suppressed,
+	- But parameter expansion, arithmetic expansion, and command substitution are still carried out.
+	- Ex: 	[me@linuxbox ~]$ echo "$USER $((2+2)) $(df -h)"
+	- Ex: 	[me@linuxbox ~]$ echo "this is a 	test"
+		this is a 	test
+	
+	---
+	Single quotes
+	---
+	- If we need to suppress all expansions, we use single quotes.
+	- Here's a comparison of unquoted, double quotes, and single quotes:
+		[me@linuxbox ~]$ echo text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER
+		text /home/me/ls-output.txt a b foo 4 me
+		[me@linuxbox ~]$ echo "text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER"
+		text ~/*.txt {a,b} foo 4 me
+		[me@linuxbox ~]$ echo 'text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER'
+		text ~/*.txt {a,b} $(echo foo) $((2+2)) $USER
+	
+	---
+	Escaping Characters
+	---
+	- Sometimes we want to quote only a single character.
+	- To do this, we can precede a character with a backslash, which in this context is called the escape character.
+	- Often, this is done inside double quotes to selectively prevent an expansion.
+	- Ex: 	[me@linuxbox ~]$ echo "The balance for user $USER is: \$5.00"
+		The balance for user me is: $5.00
+	- Is is common to use escaping to eliminate special meaning of a character in a file name.
+	- Ex:	[me@linuxbox ~]$ mv bad\&filename good_filename
+	- 
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------- Advanced Keyboard Tricks -------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+clear - Clear the screen
+history - Display the contents of the history list
+
+---
+Command Line Editing
+---
+	
+	---
+	Cursor Movement
+	---
+	Key 		Action
+	Ctrl-a 		Move cursor to the beginning of the line.
+	Ctrl-e 		Move cursor to the end of the line.
+	Ctrl-f 		Move cursor forward one character; same as the right arrow key.
+	Ctrl-b 		Move cursor backward one character; same as the left arrow key.
+	Alt-f 		Move cursor forward one word.
+	Alt-b 		Move cursor backward one word.
+	Ctrl-l 		Clear the screen and move the cursor to the top-left corner. The clear command does the same thing.
+
+	---
+	Modifying Text
+	---
+	Key 		Action
+	Ctrl-d 		Delete the character at the cursor location.
+	Ctrl-t 		Transpose (exchange) the character at the cursor location with the one preceding it.
+	Alt-t 		Transpose the word at the cursor location with the one preceding it.
+	Alt-l		Convert the characters from the cursor location to the end of the word to lowercase.
+	Alt-u		Convert the characters from the cursor location to the end of the word to uppercase.
+
+	---
+	Cutting and Pasting (Killing and Yanking) Text
+	---
+	Key		Action
+	Ctrl-k		Kill text from the cursor location to the end of line
+	Ctrl-u		Kill text from the cursor location to the beginning of the line.
+	Alt-d		Kill text from the cursor location to the end of the current word.
+	Alt-Backspace	Kill text from the cursor location to the beginning of the current
+			word. If the cursor is at the beginning of a word, kill the previous word.
+	Ctrl-y 		Yank text from the kill-ring and insert it at the cursor location.
+
+	---
+	Completion
+	---
+	- Another way that the shell can help us is through a mechanism called completion.
+	- Completion occurs when we press the tab key while typing a command.
+	Key		Action
+	
+
+	---
+	Using History
+	---
+	- bash maintains a history of commands that have been entered. 
+	- This list is maintained in the home directory in a file called .bash_history
+		---
+		Searching history
+		---
+		- We can view the contents of history by doing the following, [me@linuxbox ~]$ history | less
+		- most modern Linux distributions configure bash to store the last 1000 commands we have entered.
+		- History commands
+		Key 		Action
+		Ctrl-p 		Move to the previous history entry. This is the same action as the up arrow.
+		Ctrl-n 		Move to the next history entry. This is the same action as the down arrow.
+		Alt-< 		Move to the beginning (top) of the history list.
+		Alt-> 		Move to the end (bottom) of the history list, i.e., the current command line.
+		Ctrl-r 		Reverse incremental search. This searches incrementally from the current command line up the history list.
+		Alt-p 		Reverse search, nonincremental. With this key, type in the search string and press enter before the search is performed.
+		Alt-n 		Forward search, nonincremental.
+		Ctrl-o 		Execute the current item in the history list and advance to the next one. This is handy if we are trying to re-execute a sequence of
+				commands in the history list
+
+		---
+		History Expansion
+		---
+		- The shell offer a specialized type of expansion for items in the history list by using the ! character.
+		sequence 	Action
+		!! 		Repeat the last command. It is probably easier to press up arrow and enter
+		!number 	Repeat history list item number.
+		!string		Repeat last history list item starting with string.
+		!?string	Repeat last history list item containing string.
+
+		---
+		Script
+		---
+		- Most Linux distributions include a program called script
+		- It can be used to record entire shell session and store it in a file.
+		- Syntax: Script filename
+		- if not filename is specified, the file typescript is used.
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- Permissions ---------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+id 	- Display user identity
+chmod 	- Change a file's mode
+unmask	- Set the default file permissions
+su	- run a shell as another user
+sudo	- Execute a command as another user
+chown	- change the file's owner
+chgrp	- change a file's group ownership
+addgroup - add a user or a group to the system
+usermod	- modify a user account
+passwd	- change a user's password
+
+
+	---
+	Users, Group members, and Everybody Else
+	---
+	- To find info about our identity, we use id command
+	- Ex:	[me@linuxbox ~]$ id
+		uid=500(me) gid=500(me) groups=500(me)
+	- Ex:	[me@linuxbox ~]$ id
+		uid=1000(me) gid=1000(me) groups=4(adm),20(dialout),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),108(lpadmin),114(admin),1000(me)
+	- In Fedora, the uid and gid numbering for regular user account starts at 500 & in Ubuntu it starts from 1000.
+	- Like so many things in Linux, it comes from a text files. User accounts are defined in the /etc/passwd file and groups are defined in the /etc/group file.
+	- when users and groups are created, these modified along with /etc/shadow, which holds the info about the user's password.
+	
+	---
+	Reading, writing and Executing
+	---
+	- Access rights to files and directories are defined in terms of read access, write access and execution access.
+	- Ex: 	[me@linuxbox ~]$ ls -l foo.txt
+		-rw-rw-r-- 1 me me 0 2016-03-06 14:52 foo.txt
+	- The first 10 characters of the listing are file attributes.
+	- The first of the characters are the file types.
+		Table file table
+		Attribute	File type
+		-		a regular file
+		d		a directory
+		l		a symbolic link. For symbolic links, the remaining file attributes are always "rwxrwxrwx" and are dummy values
+		c		a character special file. The file type refers to a device that handle data as a stream of bytes, such as terminal or /dev/null
+		b		a block special file. This file type refers to a device that handles data in blocks, such as a hard disk or DVD drive
+	
+	- The remaining nine characters of the file attributes, called the file mode, represent the read, write and execute permissions for the file's owner
+		file's group owner and everybody else.
+	- 	User	Group	others
+		rwx	rwx	rwx
+	- Permission Attributes:
+		Attributes		Files									Directories
+		r			Allows are file to be opened and read.					Allows a directory content to be listed, but no file info is available 															unless the execute attribute is also set.
+		w			Allows the file to be written to or truncated, but will not allow	Allows the file within a directory to be created, deleted and renamed if
+					files to delete or renamed. The ability to delete or rename depends 	the execute attribute is also set.
+					on directory attribute							
+		x			Allows the file to be treated as a program and executed.		Allows a directory to be entered (i.e., cd directory) and
+					Program files written in scripting languages must also be set as	directory metadata (i.e, ls -l directory) to be accessed.
+					readable to be executed.						File operations such cp, rm, and mv require this access to 														the directory.
+	---			
+	chmod – Change File Mode
+	---
+	- to change the mode (permissions) of a file and directory, the chmod command is used.
+	- only the file's owner or superuser can change the mode of file or directory.
+	- chmod supports two distinct ways to specify mode change: Octal number representation and symbolic representation.									- With octal notation, we use octal numbers to set the pattern of desired permission.
+	- Table 9-4: File Modes in Binary and Octal
+		Octal Binary File Mode
+		0 	000 	---
+		1 	001 	--x
+		2 	010 	-w-
+		3 	011 	-wx
+		4 	100 	r--
+		5 	101 	r-x
+		6 	110 	rw-
+		7 	111 	rwx
+	- Ex:	[me@linuxbox ~]$ > foo.txt
+		[me@linuxbox ~]$ ls -l foo.txt
+		-rw-rw-r-- 1 me me 0 2016-03-06 14:52 foo.txt
+		[me@linuxbox ~]$ chmod 600 foo.txt
+		[me@linuxbox ~]$ ls -l foo.txt
+		-rw------- 1 me me 0 2016-03-06 14:52 foo.txt
+
+	- chmod also supports symbolic notation for specifying file mode.
+	- Symbolic notation is divided into three parts:
+		- Who the change will affect
+		- Which operation will be performed
+		- What permission will be set
+	- To specify who is affected a combination of characters, "u" "g" "o" "a" is used.
+	- 	Symbol		Meaning
+		u		Short for user i.e., the file or directory's owner		
+		g		Group owner
+		o		Short for others
+		a		Short for "all". This is a combination of "u" "g" and "o".
+	- if no characters in specified "all" will be assumed.
+	- The operation may be a "+" indicating that a permission is to be added, a "-" indicating that a permission is to be take away 
+		or a "=" indicating that only the specified permission are to be applied and all others to be removed.
+	- Ex: 	u+x   --> Add execute permission for the owner.
+		o-rw  --> Remove read and write permission for anyone besides the user and the group owner.
+
+	---
+	umask - user file creation mask
+	---
+	- The umask command controls the default permission given to a file when it is created.
+	- It uses octal notations to express a mask of bits to be removed from file mode attributes.
+	- Default permission: 
+		When a file is created the system starts with base permissions of 666 ( read + write for everyone ), no execute by default.
+		When a directory is created, the system starts with base permission of 777 ( read + write + execute for everyone ) then the unmask value 
+		is subtracted (bitwise) to get a final permissions.
+	- suppose if umask is 0002. then 
+		New files:
+		start with 666
+		Subtract 022 → results in 644 (rw-r--r--)
+
+		New directories:
+		Start with 777
+		Subtract 022 → results in 755 (rwxr-xr-x)
+	-	Original file mode 	--- rw- rw- rw
+		Mask 			000 000 010 010
+		Result 			--- rw- r-- r--
+		where a 1 appears in the binary value, the corresponding attribute is unset.
+	
+	---
+	Changing identities
+	---
+	- There are three ways to change identities
+		1. Log out and log back in as the alternative user.
+		2. Use the su command
+		3. Use the sudo command
+	We will focus on 2 and 3.	
+
+		--- 
+		su - Run a Shell with Substitute User and Group IDs
+		---
+		- su command allows us to assume the identity of another user and either start a new shell session with that user's ID or
+			to issue a single command as that user.
+		- Syntax: su [-[l]] [user]
+		- If "-l" option is included, the resulting shell session is a login shell for the specified user.
+		- The user environment is loaded and the working directory is changed to the user's home directory.
+		- If user is not specified, the superuser is assumed.
+		- "-l" can also be abbreviated as "-"
+		- Ex: 	[me@linuxbox ~]$ su -
+			Password:
+			[root@linuxbox ~]#
+		- **It is also possible to execute a single command rather than starting a new interactive command by using the su this way,
+			su -c "command"
+		- Ex: 	[me@linuxbox ~]$ su -c 'ls -l /root/*'
+			Password:
+			-rw------- 1 root root 754 2007-08-11 03:19 /root/anaconda-ks.cfg
+
+		---
+		sudo - Execute a Command as Another User
+		---
+		- sudo command is like su in many ways but has some important capabilities.
+		- The admin can configure sudo to allow an ordinary user to execute command as a different user (usually superuser) in a controlled way.
+		- **In particular, a user may be restricted to one or more specific commands and no others.
+		- **Another important difference is that the use of sudo does not require access to the superuser's password. 
+			Authenticating using sudo, requires the user’s own password.
+		- Ex:	[me@linuxbox ~]$ sudo backup_script
+			Password:
+			System Backup Starting...
+		- that sudo can be used to start an interactive superuser session (much like su -) by using the -i option
+		- To see what privileges are granted by sudo, use the -l option to list them:
+			[me@linuxbox ~]$ sudo -l
+			User me may run the following commands on this host:
+				(ALL) ALL
+		
+		---
+		chown - Change file owner and group
+		---
+		- chown is used to change the owner and group owner of a file or a directory.
+		- Superuser privilege are required to use this command.
+		- Syntax: chown [owner][:[group]] file...
+		- 	Argument 	Results
+			bob 		Changes the ownership of the file from its current owner to user bob.
+			bob:		users Changes the ownership of the file from its current owner to user
+					bob and changes the file group owner to group users.
+			:admins 	Changes the group owner to the group admins. The file owner is unchanged.
+			bob: 		Changes the file owner from the current owner to user bob and
+					changes the group owner to the login group of user bob.
+		
+		---
+		chgrp – Change Group Ownership
+		---
+		- In older version of Unix, chown command only changed file ownership, not group ownership.
+		- For that purpose a separate command, chgrp was used.
+
+		---
+		Changing the Password
+		---
+		- To set or change a password, passwd command is used.
+		- Syntax: passwd [user]
+		- If we have superuser privileges, then we can specify a username as an argument for passwd command to the set the password for another user.
+		- ** the passwd, addgroup, and usermod commands are part of a suite of commands in shadow-utils package.
+		- 	command		Description
+		  	lastlog		reports most recent login of all users or of a given user.
+			useradd		create a new user or update default new user information.
+			usermod		modify a user account				
+			userdel		delete a user account
+			groupadd	Create a new group
+			groupdel	delete a group
+			groupmod	modify a group definition on the system
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------- Processes ---------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+ps 	- report a snapshot of current processes.
+top 	- display tasks
+jobs	- list active jobs
+bg	- place a job in the background
+fg	- place a job in the foreground
+kill	- send a signal to a process
+killall	- kill processes by name
+nice	- Run a program with modified scheduling priority
+renice	- alter priority of running processes
+nohup	- run a command immune to hangups
+halt/power-off/reboot	- halt,power-off or reboot the system.
+shutdown - shutdown or reboot the system
+
+	---
+	How a process works
+	---
+	- when a system starts up, the kernel initiates a few of it's own activities as processes and launches a program called init.
+	- init, in turn, starts system which starts all the system services.
+	- In older Linux distro, init runs a series of shell scripts (located in /etc) called init scripts.
+	- Many system services are implemented as daemon programs, programs that just sit in the background and do their thing
+		without having any user interface.
+	- the kernel maintains info about each process to help keep things organized. Each process is assigned a process ID (PID)
+	- process ID are assigned in ascending order, with init always getting PID 1.
+	- The kernel also keeps track of the memory assigned to each process, as well as the processes' readiness to resume execution. 
+	- Like files, processes also have owners and user IDs, effective user IDs, etc.
+
+	---
+	Viewing the process
+	---
+	- one of the most commonly used tool is ps command.
+	- 	[me@linuxbox ~]$ ps
+ 		PID 	TTY 	TIME 	CMD
+		5198 	pts/1 00:00:00 bash
+		10129 	pts/1 00:00:00 ps
+	- By default only shows processes associated with current terminal session.
+	- TTY is short for "teletype", refers controlling terminal of the process.
+	- TIME is the amount of cpu time consumed by the process.
+	- 	[me@linuxbox ~]$ ps x
+		PID TTY STAT 	TIME 	COMMAND
+ 		2799 ? 	Ssl 	0:00 /usr/libexec/bonobo-activation-server –ac
+ 		2820 ? 	Sl 	0:01 /usr/libexec/evolution-data-server-1.10 -
+	- the presence of "?" in TTY column indicates not controlling terminal.
+	- STAT is short for state
+		R	Running. This means that the process is running or ready to run.
+		S	Sleeping. The process is not running; rather, it is waiting for an event, such as a keystroke or network packet.
+		D	Uninterruptible sleep. The process is waiting for I/O such as a disk drive.
+		T	Stopped. The process has been instructed to stop.
+		Z	A defunct or “zombie” process. This is a child process that has terminated but has not been cleaned up by its parent.
+		<	A high-priority process. It's possible to grant more importance to a process, giving it more time on the CPU. This property of a process
+			is called niceness. A process with high priority is said to be less nice because it's taking more of the CPU's time, which leaves less for
+			everybody else.
+		N	A low-priority process. A process with low priority (a “nice” process) will get processor time only after other processes with
+			higher priority have been serviced.
+	- Another popular set of options is “aux” (without a leading dash). This gives us even more information.
+	- 	[me@linuxbox ~]$ ps aux
+		USER PID %CPU %MEM VSZ  RSS TTY STAT START TIME COMMAND
+		root 1   0.0  0.0  2136 644 ?   Ss   Mar05 0:31 init
+	- This set of options displays the processes belonging to every user.
+	- The most popular BSD options are
+		Option 	Function
+		x 	List our running processes.
+		ax 	List all running processes..
+		w 	Include full command names.
+		u 	Verbose listing.
+
+	---
+	Viewing processes Dynamically with top
+	---
+	- ps view machine state at the moment but top shares more dynamic view of the machine's activity.
+	- it continuously updates, by default every 3 seconds.
+
+---
+Controlling the process
+---
+	---
+	Interrupting a process
+	---
+	- Ctrl-c will interrupts a program
+
+	---
+	Putting a process in the background
+	---
+	- A program can be placed in background using & 
+	- Ex: 	[me@linuxbox ~]$ xlogo &
+		[1] 28236
+		[me@linuxbox ~]$
+	- the numbers are shell feature called job control
+	- it's telling that we created a job number 1 ([1]) and it has PID 28236
+	- using the jobs command the shell's control facility let us to list jobs launched from our terminal
+	- we can put multiple commands in background,
+	- Ex:	me@linuxbox:~$ xlogo & gedit &
+		[1] 47211
+		[2] 47212
+	
+	---
+	Returning a Process to the Foreground 
+	---
+	- we use fg command to bring the program to the foreground
+	- we can use % followed by the job number (called a jobspec) to do the same.
+	- Ex:	[me@linuxbox ~]$ jobs
+		[1]+ Running xlogo &
+		[me@linuxbox ~]$ fg %1
+		xlogo
+
+	---
+	Stopping (pausing) a process
+	---
+	- we can stop a program without terminating it by using Ctrl-z
+	- we can either continue the program execution in the foreground, using the fg command or resume the program's execution in the background with the bg command.
+	
+	---
+	controlling a process
+	---
+	- we can control the priority (niceness) of a program using nice and renice command.
+	- Only superuser can priority of the process and normal user can only decrease the priority of the process.
+	- Niceness adjustments are expressed from -20 ( highest priority, least nice) to +19 ( lowest priority, very nice), with a default value 0.
+	- [me@linuxbox ~]$ sudo nice -n -10 must-run-fast
+	- 	[me@linuxbox ~]$ ps
+		PID TTY TIME CMD
+		379087 pts/9 00:00:00 bash
+ 		379215 pts/9 00:00:00 cpu-hog
+ 		379223 pts/9 00:00:00 ps
+		[me@linuxbox ~]$ renice -n 19 379215
+
+---
+Signals
+---
+	- signals are one of several ways that the operating system communicates with the programs.
+
+	---
+	using kill command to send a signal
+	---
+	- earlier we used Ctrl-c and Ctrl-z. when terminal receives these keystrokes, it sends a signal to the program in foreground,
+		Ctrl-c sent a signal called INT (interrupt) and Ctrl-z sent a signal called TSTP (terminal stop).
+	- we can send a signal to programs using kill
+		syntax: kill [-signal] PID...
+	- If not signal is specified, TERM (terminate) signal is sent by default.
+	- Some signals are sent to programs and some are sent directly to terminal, like the kill command.
+	- a complete list of signals can be displayed with the following command: kill -l
+	
+	---
+	Making a process Hangup proof
+	---
+	- command line programs will respond to the HUP signal by terminating when its controlling terminal "hangs up" (i.e. closes or disconnects).
+	- to prevent this behaviour, we can launch the program with nohup command. 
+	- [me@linuxbox ~]$ nohup xlogo
+
+	---
+	Sending Signals to Multiple Processes with killall
+	---
+	- It's also possible to send signals to multiple processes matching a specified program or username by using the killall command.
+	- killall [-u user] [-signal] name...
+
+---
+Shutting Down the System
+---		
+	- The process of shutting down the system involves the orderly termination of all the processes on the system
+	- halt, poweroff, reboot and shutdown
+	- halt, poweroff, reboot - can be used without command line options. [me@linuxbox ~]$ sudo reboot
+	- shutdown is the general-purpose command that can do all of them. [me@linuxbox ~]$ sudo shutdown -h now
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------- The Environment --------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+- shell maintains a body of information during our shell sessions called environment.
+- most programs store program settings in configuration files but some programs also look for values in environment to adjust its behaviour.
+- we will work with following commands,
+printenv
+set
+export
+alias
+source
+
+---
+what is stored in the environment
+---
+	- shell stores basic two types of data, environment variable and shell variables
+	- shell variables are bits of data placed there by the current instance of the bash and environment variable are everything else.
+	
+	--- 
+	Examining the environment
+	---
+	- to see what stored in the env, we can use set command or printenv
+	- set will show both shell and environment variable 
+	- printenv will only display env variables
+	- 	[me@linuxbox ~]$ printenv USER
+		me
+	-	[me@linuxbox ~]$ set | less
+	- also possible to view the contents of a variable using the echo command 
+		[me@linuxbox ~]$ echo $HOME
+		/home/me
+
+	---
+	How is the environment established?
+	---
+	- when we login, bash reads a series of configuration scripts called startup files, which defines environment shared by all users.
+	- this is followed by more startup files in our home directory that define our personal env.
+	- the exact sequence depends on the shell session being started,
+		1. a login shell - A login shell session is the one in which we are prompted for username and password.
+		2. a non-login shell - A non-login shell session typically occurs when we launch a terminal session in GUI with our terminal session.
+	- login shell reads one ore more startup files
+
+	/etc/profile 	- a global configuration script that applied to all users.
+	~/.bash_profile	- a user's personal startup file. can be used to extend or override settings in global configuration script
+	~/.bash_login	- if ~/.bash_profile is not available then bash attempts to read this script
+	~/.profile	- if neither ~/.bash_profile nor ~/.bash_login is found, bash attempts to read this file
+	
+	- non-login shell sessions read the startup files. In additional to reading the startup files, non-login shells inherit env variables from parent process.
+	
+	/etc/bash.bashrc - a global configuration script that applies to all users.
+	~/.bashrc	 - A user's personal startup file. It can be used to extend or override settings in the global configuration script.
+
+	- Personal bin Directory in Linux $HOME is your home directory (e.g., /home/user). 
+	- By convention, creating a bin folder inside it ($HOME/bin) lets you store personal scripts and programs.
+	- To make the shell recognize it, add to your PATH: export PATH=$PATH:$HOME/bin
+	- Now any script placed in ~/bin can be run like a normal command (e.g., myscript) without typing its full path.
+	- The shell searches directories in PATH in order, so the first match is executed.
+
+	---
+	Exploring how child processes inherit their environments
+	---
+	-  a child process cannot alter the environment of its parent. When a child process terminates, it takes its environment with it.
+
+	
+---
+Modifying the Environment
+---
+	---
+	Which Files Should We Modify?
+	---
+	- As a general rule, to add directories to your PATH or define additional environment variables, we need to place the changes in .bash_profile (ubuntu uses .profile)
+	- for everything else, place the changes in .bashrc
+
+	---
+	Using a Text Editor
+	---
+	- Text editors are invoked from the command line by typing the name of the editor followed by the name of the file we want to edit.
+	- If the file does not already exist, the editor will assume that we want to create a new file.
+	- Ex:	[me@linuxbox ~]$ gedit some_file
+	
+	---
+	Activating our changes 
+	---
+	- changes made to .bashrc file will only take effect until we close our terminal session and start a new one. 
+	- because .bashrc is only read at the beginning of a session.
+	- we can force bash to reread the modified .bashrc file with the following command: [me@linuxbox ~]$ source ~/.bashrc
+	- The source command (which can be abbreviated as .) is a shell builtin that reads a file directly into the current shell
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------- customizing the prompt ------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+	---
+	Anatomy of a prompt
+	---
+	- Our default prompt looks like this [me@linuxbox ~]$
+	- it contains our username, our hostname and our working directory
+	- the prompt is defined by an environment variable named PS1 (Short for prompt string 1)
+	- we can see the contents of the PS1 with the echo command
+	 	[me@linuxbox ~]$ echo $PS1
+		[\u@\h \W]\$
+	- \u or \h or \w are escape characters used in shell prompts and they are a list of these.
+	- we can use this and customize our shell prompts
+	
+	---
+	Trying Some Alternative Prompt Designs
+	---
+	- before changing the prompt design lets take a backup by creating a new variable and assign the value of PS1
+		[me@linuxbox ~]$ ps1_old="$PS1"
+	- we can restore it back by reversing the process [me@linuxbox ~]$ PS1="$ps1_old"
+	- ex: 	[me@linuxbox ~]$ PS1=
+	- ex:	PS1="\$ "
+	- ex:	$ PS1="\A \h \$ "
+		17:33 linuxbox $
+	- ex:	17:37 linuxbox $ PS1="<\u@\h \W>\$ "
+		<me@linuxbox ~>$
+	
+	---
+	Adding color 
+	---
+	- Most terminal emulator respond to certain non-printing character sequence to control sequences to control such things as character attributes 
+		 (such as color, bold text, and the dreaded blinking text) and cursor position.
+	- Character color is controlled by sending the terminal emulator an ANSI escape code embedded in the stream of characters to be displayed.
+	- the control code does not "print out" on the display, rather it is interpreted by the terminal as an instruction.
+	- the \[ and \] are used to encapsulate non-printing characters.
+	- ANSI escape code begins with an octal 033 (code generated by Esc key ), followed by an optional character attribute, followed by an instruction
+	- Ex: \033[0;30m code to set the text color to normal (attribute = 0), black text
+	- Table 13- 2: Escape Sequences Used to Set Text Colors
+		Sequence 	Text Color 	Sequence 	Text Color
+		\033[0;30m 	Black 		\033[1;30m 	Dark gray
+		\033[0;31m 	Red 		\033[1;31m 	Light red
+		\033[0;32m 	Green 		\033[1;32m 	Light green
+		\033[0;33m 	Brown 		\033[1;33m 	Yellow
+		\033[0;34m 	Blue 		\033[1;34m 	Light blue
+		\033[0;35m 	Purple 		\033[1;35m 	Light purple
+		\033[0;36m 	Cyan 		\033[1;36m 	Light cyan
+		\033[0;37m 	Light gray 	\033[1;37m 	White
+	
+	---
+	Moving the cursor
+	---
+	- Escape codes can be used to position the cursor. 
+	- This is commonly used to provide a clock or some other kind of information at a different location on the screen, such as in an
+		upper corner each time the prompt is drawn.
+	
+	---
+	Saving the Prompt
+	---
+	- We can make the prompt permanent by adding it to our .bashrc file
+	- we need to add the changes to the file	
+		PS1="\[\033[s\033[0;0H\033[0;41m\033[K\033[1;33m\t\033[0m\033[u\] <\u@\h \W>\$ "
+		export PS1
+
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------  Package Management ---------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+- Package Management is a method of installing and maintaining software
+
+	---
+	package files
+	---
+	- the basic unit of software in a packaging system is the package file.
+	- a package file is a compressed collection of files that comprise of the software package
+	- a package may consist of numerous program and data files that support the programs
+	- in addition to that, the package files can include meta data about the package - like text description or pre - and post - installation scripts.
+	- package file are created by a person known as a package maintainer
+	- The package maintainer gets the software in source code form from the upstream provider (the author of the program), compiles it,
+		and creates the package metadata and any necessary installation scripts
+	
+	---
+	Repositories
+	---
+	- Packages are made available to the users of a distribution in central repositories that may
+		contain many thousands of packages, each specially built and maintained for the distribution
+	
+	---
+	Dependencies
+	---
+	- program are seldom "standalone", rather than they rely on the presence of other software components to get their work done.
+	- common activities like input/output, are handled by routines and are stored in shared libraries, which provide essentials service.
+	- Modern package management systems provide dependency resolution to ensure the dependencies are installed while installing a package.
+
+	---
+	High and Low-level Package Tools
+	---
+	- Low level tools which handle tasks such as installation and removing package files
+	- high level tools that perform metadata searching and dependency resolution
+	- Table 14- 2: Packaging System Tools
+		Distributions 		Low-Level Tools 	High-Level Tools
+		Debian style 		dpkg 			apt, apt-get,aptitude
+		Fedora, Red Hat
+		Enterprise Linux, 	rpm 			dnf, yum
+		CentOS		
+
+---
+Common Package Management Tasks
+---
+	
+	---
+	Finding a Package in a Repository
+	---
+	- 	Style 		Command(s)
+		Debian 		apt update; apt search search_string
+		Red Hat 	dnf search search_string
+	---	
+	Installing a Package from a Repository
+	---
+	- 	Style 		Command(s)
+		Debian 		apt update; apt install package_name
+		Red Hat 	dnf install package_name
+	---
+	Installing a Package from a Package File
+	---
+	- If a package file has been downloaded from a source other than a repository, 
+		it can be installed directly (though without dependency resolution) using a low-level tool
+	- Table: Low-Level Package Installation Commands
+		Style 		Command(s)
+		Debian 		dpkg -i package_file
+		Red Hat 	rpm -i package_file
+	---
+	Removing a Package
+	---
+	- Table: Package Removal Commands
+		Style 		Command(s)
+		Debian 		apt remove package_name
+		Red Hat 	dnf erase package_name
+	---
+	Updating Packages from a Repository
+	---
+	- Table: Package Update Commands
+		Style 		Command(s)
+		Debian 		apt update; apt upgrade
+		Red Hat 	dnf update
+	---
+	Upgrading a Package from a Package File
+	---
+	- If an updated version of a package has been downloaded from a non-repository source, it
+		can be installed, replacing the previous version
+	- Table: Low-Level Package Upgrade Commands
+		Style 		Command(s)
+		Debian 		dpkg -i package_file
+		Red Hat 	rpm -U package_file
+	---
+	Listing Installed Packages
+	---
+	- Table: Package Listing Commands
+		Style 		Command(s)
+		Debian 		dpkg -l
+		Red Hat 	rpm -qa
+	---
+	Determining Whether a Package is Installed
+	---
+	- Table: Package Status Commands
+		Style 		Command(s)
+		Debian 		dpkg -s package_name
+		Red Hat 	rpm -q package_name
+	---
+	Displaying Information About an Installed Package
+	---
+	- Table: Package Information Commands
+		Style 		Command(s)
+		Debian 		apt show package_name
+		Red Hat 	dnf info package_name
+	---
+	Finding Which Package Installed a File
+	---
+	- Table: Package File Identification Commands
+		Style 		Command(s)
+		Debian 		dpkg -S file_name
+		Red Hat 	rpm -qf file_name
+
+- Compiling vs. Precompiled
+	Compiling: You take source code (C, C++, etc.) and run it through a compiler to create a binary (an executable).
+	Precompiled: Somebody else has already done that compiling step for you and gives you the ready-to-run binary.
+	So a precompiled package is just software that’s already built into a format your Linux system can install immediately.
+
+- static vs. dynamic precompiled packages
+	1. Static linking 
+		When a program is statically compiled, all the libraries it needs are built directly into the executable.
+		So the program is a stand-alone binary — it doesn’t depend on external library files being present on your system.
+	2. Dynamic linking
+		When a program is dynamically compiled, it does not include all libraries inside the binary.
+		Instead, it relies on shared libraries (like .so files in /lib or /usr/lib) already installed on your system.
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------  	Storage Media 	-----------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+● mount – Mount a file system
+● umount – Unmount a file system
+● parted – Partition manipulation program
+● mkfs – Create a file system
+● fsck – Check and repair a file system
+● dd – Convert and copy a file
+● genisoimage – Create an ISO 9660 image file
+● wodim – Write data to optical storage media
+● sha256sum – Compute and check SHA256 checksums
+
+---
+Mounting and Unmounting Storage Devices
+---
+	- the first step in managing a storage device is attaching the device to the file system tree. This process is called mounting.
+	- this allows the device to interact with the operating system
+	- Linux, maintain a single file system tree with devices attached at various points	
+	- A file named /etc/fstab (short for “file system table”) lists the devices (typically
+		hard disk partitions) that are to be mounted at boot time
+	- Ex: LABEL=/12 	/ 	ext4 	defaults 	1 1
+	- each line of the file consists of six fields
+		Table: /etc/fstab Fields	
+		Field 		Contents 		Description
+		1		Device			Traditionally, Linux identified drives by their device file in /dev. If you unplug drives or boot differently, what 							used to be /dev/sda1 might suddenly become /dev/sdb1. To solve this, modern Linux systems use labels or UUIDs
+		2		Mount point		The directory where the device is attached to the file system tree.  	
+		3		File system type	Linux allows many types of file systems to be mounted. Most common ext4 but supports FAT16 (msdos), FAT32 (vfat), 							NTFS (ntfs), CD-ROM (iso9660), etc.
+		4		Options			File systems can be mounted at any various options. we can mount it as read only.
+		5		Frequency		A single number that specifies if and when a file system is to be backed up with the dump command.
+		6		Order			A single number that specifies in what order file systems should be checked with the fsck command
+	
+	---
+	Viewing a List of Mounted File Systems
+	---
+	- the mount command is used to mount file systems.
+	- entering command without an argument will display a list of file systems currently mounted.
+	- 	[me@linuxbox ~]$ mount
+		/dev/sda2 on / type ext4 (rw)
+	- the format of the listing is as follows: device on mount_point type file_system_type (options)
+	- to unmount the drive and remount it at another location in the file system tree we become superuser.
+	- we use umount command to unmount the drive.
+	- 	[me@linuxbox ~]$ sudo -i
+		[sudo] password for me:
+		[root@linuxbox ~]# umount /dev/sdc
+	- we can create a new mount point or use an existing one( empty or non-empty ).
+	- if we mount a device on a non-empty directory, we will not be able to see the directory's previous contents until you unmount the device
+	- a mount point is a directory simply a directory somewhere on the file system tree.
+	- we can mount the flash drive at the new mount point, the -t option is used to specify the file system type
+		[root@linuxbox ~]# mount -t vfat /dev/sdc /mnt/flash
+	- Why Unmounting a Drive is Important?
+		Linux uses buffers and cache to speed up disk operations.
+		When you save or copy files, data may first be written to RAM (buffer/cache) and only later flushed to the actual drive.
+		If you remove the drive without unmounting, some data may still be in memory and not yet on the disk → risk of data loss or corruption.
+		Unmounting forces the OS to flush all pending writes from buffer/cache to the device and safely close the filesystem
+	---
+	Determining Device Names 	
+	---
+	- lets list the contents of the contents of the /dev to list some naming pattern
+	- Table: Linux Storage Device Names
+		Pattern		Device
+		/dev/fd*	floppy disk
+		/dev/hd*	IDE (PATA) disks on older systems
+		/dev/sd*	SCSI disks. On modern Linux systems, the kernel treats all disklike devices (including PATA/SATA hard disks, flash drives, and
+				USB mass storage devices such as portable music players and digital cameras) as SCSI disks
+		/dev/lp*	printers
+		/dev/sr*	optical drivers(CD/DVD readers and burners)
+	- we often see symbolic links such as /dev/cdrom. /dev/dvd and /dev/floppy which points to the actual device files
+
+	- we can use the following technique to determine how the removable device is named when it is attached
+	- first start realtime view of the /var/log/messages or /var/log/syslog file 
+		[me@linuxbox ~]$ sudo tail -f /var/log/syslog
+	- On modern systemd-based systems use this command to follow the systemd journal:
+		[me@linuxbox ~]$ sudo journalctl -f
+	- The last few lines of the listing will be displayed and then will pause
+	- plug in the removable device and the kernel will immediately probe it
+	- there another way we can do this using lsblk
+	- this command list all the block devices attached to the system regardless of if they are mounted or not
+	
+---
+creating a new file system
+---
+	---
+	Manipulating Partitions with parted	
+	---
+	- parted is one of the host programs that allow us to interact directly with disk-like devices at a very low level
+	- we can use lsblk to get its name
+	- with parted, we can edit, delete, and create partitions on the device.
+	- To work with our hard drive, we must first unmount it (if needed) and then invoke the parted program as follows:
+		[me@linuxbox ~]$ sudo umount /dev/sdd1
+		[me@linuxbox ~]$ sudo parted /dev/sdd
+	- the first thing to do is examine the exsisting partition layout and we do it by entering the print command
+	- to delete the current partition we use rm command
+		(parted) rm 1
+	- to create new partition we use mkpart command
+		(parted) mkpart
+		Partition type? primary/extended? primary
+		File system type? [ext2]? ext4
+		Start? 1
+		End? 120000
+	- When creating a partition on this disk (which has a MBR, master boot record style partition table) we specify either a primary or extended partition followed by the start and end
+		of the partition in the default one megabyte increments.
+	- we use quit to exit the parted program
+	
+	---
+	Creating a new file system with mkfs
+	---
+	- once partition is done we need to create (format) the new file system on to the drive.
+	- we use mkfs which can create file systems in a variety of problems.
+	- To create the ext4 file system on the drive, we use the -t option to specify the ext4 file system type, followed by a descriptive volume label,
+		and the name of the device containing the partition we want to format.
+	- [me@linuxbox ~]$ sudo mkfs -t ext4 -L EXT4_Disk /dev/sdd1
+	- to create NTFS partition.
+		[me@linuxbox ~]$ sudo mkfs -t ntfs --quick -L NTFS_Disk /dev/sdd2
+	- --quick option to skip the bad block checking because that takes a long time to perform
+
+---
+Testing and Repairing File Systems
+---
+	- A file named /etc/fstab (short for “file system table”) lists the devices (typically
+		hard disk partitions) that are to be mounted at boot time
+	- Ex: LABEL=/12 	/ 	ext4 	defaults 	1 1
+	- each time system boots, it routinely checks the integrity of the file systems before mounting them
+	- the last number in each fstab entry specifies the order in which the devices has to be checked
+	- Devices with a zero as the last digit are not routinely checked.
+	- in addition to integrity of file systems, fsck also used to repair corrupt file system and the recoverd portion is placed in the lost+found directory, 
+		located in the root of the file system.
+
+---
+moving data directly to and from devices
+---
+	- The dd program performs the task of clonning devices.
+	- It copies blocks of data from one place to another. 
+	- It uses a unique syntax (for historical reasons) and is usually used this way:
+		dd if=input_file of=output_file [bs=block_size [count=blocks]]
+
+---
+Verifying data
+---
+	- to verify the integrity of the files we downloaded we use sha256sum, a modern replacement for an earlier program called md5sum
+	- [me@linuxbox ~]$ sha256sum -b linuxmint-22-cinnamon-64bit.iso
+		7a04b54830004e945c1eda6ed6ec8c57ff4b249de4b331bd021a849694f29b8f *linuxmint-22-cinnamon-64bit.iso
+	- The -b option tells sha256sum that we are looking at a binary file rather than text
+	- Another way we can check the file is to have sha256sum process the sha256sum.txt file to compare its checksums against
+		ones it generates from the files on the list
+	- [me@linuxbox ~]$ sha256sum -c --ignore-missing sha256sum.txt
+		linuxmint-22-cinnamon-64bit.iso: OK
+	- The -c option (short for “check”) invokes this mode while the --ignore-missing
+		option tells sha256sum not to complain that the files we didn’t download.
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------  	Networking ----------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+● ping – Send an ICMP ECHO_REQUEST to network hosts
+● traceroute – Print the route packets trace to a network host
+● ip – Show / manipulate routing, devices, policy routing and tunnels
+● netstat – Print network connections, routing tables, interface statistics, masquerade connections, and multicast memberships
+● ftp – Internet file transfer program
+● curl - Transfer a URL
+● wget – Non-interactive network downloader
+● ssh – OpenSSH SSH client (remote login program)
+
+
+---
+Examining and monitoring the network
+---
+
+	---
+	ping
+	---
+	- the most basic networking command is ping
+	- The ping command sends a special network packet called an ICMP ECHO_REQUEST to a specified host
+	- Most network devices receiving this packet will reply to it, allowing the network connection to be verified
+	- [me@linuxbox ~]$ ping linuxcommand.org
+	- for security reasons, some systems are configured to block ICMP requests
+	
+	---
+	traceroute
+	---
+	- traceroute program (some systems use similar tracepath program instead) lists all the "hops" network traffic takes to get from local system to the specified host
+	- [me@linuxbox ~]$ traceroute slashdot.org
+	- Due to some router configuration, network congession, firewalls, etc... we see ashterisks
+	- to overcome this, we can use -T or -I options
+
+	---
+	ip
+	---
+	- the ip program is a multi purpose network configuration tool that makes the full range of networking features available in modern linux kernel
+	- it replaces the earlier and now deprecated ifconfig program
+	- ip program is used to examine various network setting and statistics
+	- 	[me@linuxbox ~]$ ip address show
+		1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+		 link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+ 		 inet 127.0.0.1/8 scope host lo
+ 		  valid_lft forever preferred_lft forever
+ 		 inet6 ::1/128 scope host noprefixroute 
+		 valid_lft forever preferred_lft forever
+		2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+ 		 link/ether 00:26:6c:26:67:bf brd ff:ff:ff:ff:ff:ff
+ 		 inet 192.168.1.223/24 brd 192.168.50.255 scope global dynamic noprefixroute enp1s0
+		 valid_lft 82366sec preferred_lft 82366sec
+		 inet6 fe80::226:6cff:fe26:67bf/64 scope link noprefixroute
+		 valid_lft forever preferred_lft forever
+		3: wlp2s0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN group default qlen 1000
+		 link/ether 06:8a:59:f4:f6:d3 brd ff:ff:ff:ff:ff:ff permaddr
+		24:ec:99:46:aa:1e
+
+	- in the example above, we see that our test system has three network interfaces
+	- the first, called lo, is the loopback interface, a virtual interface that the system uses to “talk to itself”
+	- the second, called enp1s0, is an Ethernet interface (en = Ethernet)
+	- the third called wlp2s0 is a wireless interface (wl = wireless)
+	- When performing casual network diagnostics, the important things to look for are the
+		presence of the phrase state UP in the first line for the interface, indicating that it is enabled, and the presence of a 
+		valid IP address in the inet field on the third line. For systems using Dynamic Host Configuration Protocol (DHCP), a valid IP address in this field
+		will verify that the DHCP is working
+
+	-	[me@linuxbox ~]$ ip route show
+		default via 192.168.1.1 dev enp1s0 proto dhcp src 192.168.50.223
+		metric 100
+		169.254.0.0/16 dev enp1s0 scope link metric 1000
+		192.168.1.0/24 dev enp1s0 proto kernel scope link src 192.168.1.223
+		metric 100
+
+	- In this simple example, we see a typical routing table for a client machine on a local area network (LAN) behind a firewall/router
+	- IP addresses that end in zero refer to networks rather than individual hosts, so this destination means any host on the LAN can be reached directly
+	- 169.254.0.0 and 192.168.1.0. the 192.168.1.0 network is our LAN but 169.254.0.0 is a piece of network called Automatic Private IP Addressing (APIPA)
+	- It is used to automatically assign an IP address when a DHCP server is unavailable.
+	- The first line contains the destination default meaning any traffic destined for a network that is not otherwise listed in the table to this address
+	- The ip command is a complicated program with many options and commands. The command syntax consists of:
+		ip [-options] object [command]
+	- we used objects address and route
+	- As a convenience, ip allows object names to be shortened to a single character
+	- since the default command is show, we can shorten the commands to ip a and ip r and get identical results.
+	
+---
+Transporting Files Over a Network
+---
+	---
+	ftp
+	---
+	- ftp gets its name from the protocol it uses, the File Transfer Protocol
+	- FTP was once the most widely used method of downloading files over the Internet
+	- ftp is used to communicate with FTP servers, machines that contain files that can be uploaded and downloaded over a network.
+	- FTP (in its original form) is not secure because it sends account names and passwords in cleartext
+	- Because of this, almost all FTP done over the Internet is done by anonymous FTP servers
+	- An anonymous server allows anyone to log in using the login name “anonymous” and a meaningless password
+	
+	---
+	lftp – A Better ftp
+	---
+	- It works much like the traditional ftp program but has many additional convenience features
+	- including multipleprotocol support (including HTTP), automatic retry on failed downloads, background processes, tab completion of path names, and many more
+	
+	---
+	curl - Transfer a URL
+	---
+	- Another popular file transfer program is curl
+	- Its most basic usage works like this:
+		[me@linuxbox ~]$ curl https://linuxcommand.org
+	- we specify the URL and curl downloads the first page of the URL and outputs it to standard output.
+	- multiple URLs can be specified
+	- curl supports most network protocols including HTTP, HTTPS, FTP, IMAP, POP3, SFTP, SMB, and others
+	- Table: Common curl options
+		Option 			Description
+		-o, --output file 	Send output to the specified file rather than standard output.
+		-O, --remote-name 	Like -o but name local file the same as the name of the remote file.
+		-s, --silent 		Suppress the progress meter and error messages.
+		-u, --proxy-user	Specify a user name/password combination.
+		user:password
+		-v, --verbose 		Display verbose messages as it executes.
+
+	---
+	wget - Non-interactive network downloader
+	---
+	- Another command-line program for file downloading is wget
+	- It is useful for downloading content from both web and FTP sites
+	- Single files, multiple files, and even entire sites can be downloaded
+	- The program's many options allow wget to recursively download, download files in the background (allowing you to log off but continue downloading), 
+		and complete the download of a partially downloaded file
+
+---
+Secure Communication with Remote Hosts
+---
+	---
+	ssh
+	---
+	- to address the issue of rlogin and telnet, a new protocal called secure shell (ssh) was developed
+	- SSH solves the two basic problems of secure communication with a remote host
+		1. it authenticates that the remote host is who it says it is (thus preventing so-called man-in-the-middle attacks)
+		2. it encrypts all of the communications between the local and remote hosts
+	- SSH consists of two parts: Server and client
+		an SSH server runs on the remote host, listening for incoming connections, by default, on port 22
+		while an SSH client is used on the local system to communicate with the remote server
+	- Most Linux distributions ship an implementation of SSH called OpenSSH from the OpenBSD project
+	- To enable a system to receive remote connections, it must have the OpOpenSSH-server package installed, configured and running
+	- (if the system either is running or is behind a firewall) it must allow incoming network connections on TCP port 22
+	- The SSH client program used to connect to remote SSH servers is called, appropriately enough, ssh
+	- To connect to a remote host named remote-sys, we would use the ssh client program like so:
+		[me@linuxbox ~]$ ssh remote-sys
+		The authenticity of host 'remote-sys (192.168.1.4)' can't be
+		established.
+		RSA key fingerprint is
+		41:ed:7a:df:23:19:bf:3c:a5:17:bc:61:b3:7f:d9:bb.
+		Are you sure you want to continue connecting (yes/no)?
+	- The first time the connection is attempted, a message is displayed indicating that the authenticity of the remote host cannot be established.
+	- This is because the client program has never seen this remote host before
+	- It is also possible to connect to remote systems using a different username
+	- example, if the local user “me” had an account named “bob” on a remote system, user me could log in to the account bob on the remote system as follows:
+		[me@linuxbox ~]$ ssh bob@remote-sys
+		bob@remote-sys's password:
+		Last login: Sat Aug 30 13:03:21 2024
+		[bob@remote-sys ~]$
+	- As stated earlier, ssh verifies the authenticity of the remote host. If the remote host does not successfully authenticate, the following message appears:
+	- 	[me@linuxbox ~]$ ssh remote-sys
+		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		@ WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED! @
+		@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+		Someone could be eavesdropping on you right now (man-in-the-middle
+		attack)!
+		It is also possible that a host key has just been changed.
+		The fingerprint for the ECDSA key sent by the remote host is
+		SHA256:9uhOXHzPz0AjIs0ZDanNYfv7ksUO4Mjy5pR4kUTSKkA.
+		Please contact your system administrator.
+		Add correct host key in /home/me/.ssh/known_hosts to get rid of this
+		message.
+		Offending ECDSA key in /home/me/.ssh/known_hosts:42
+		 remove with:
+		 ssh-keygen -f "/home/me/.ssh/known_hosts" -R "remote-sys"
+		Host key for remote-sys has changed and you have requested strict
+		checking.
+		Host key verification failed.
+	- This message is caused by one of two possible situations
+		- man-in-the-middle attack
+		- more likely culprit is that the remote system has been changed somehow. ex, its operating system or SSH server has been reinstalled
+	- once determined that the message is because of a benign cause, it is safe to correct the problem on the client side
+	- This is done by using the suggestion provided by the warning message: ssh-keygen -f "/home/me/.ssh/known_hosts" -R "remote-sys"
+	- Failing that, we can use a text editor (vim perhaps) to remove the obsolete key from the ~/.ssh/known_hosts file. 
+	- Offending key in /home/me/.ssh/known_hosts:42  This means that the 42nd line of the known_hosts file contains the offending key
+	- Delete this line from the file, and the ssh program will be able to accept new authentication credentials from the remote system.
+	- Besides this, ssh allows us to execute a single command on a remote system
+	- ex: [me@linuxbox ~]$ ssh remote-sys 'ls * > dirlist.txt'
+
+	---
+	scp and sftp
+	---
+	- The OpenSSH package also includes two programs that can make use of an SSH-encrypted tunnel to copy files across the network. 
+	- scp (secure copy) is used much like the familiar cp program to copy files
+	- The most notable difference is that the source or destination pathnames may be preceded with the name of a remote host, followed by a colon character
+	- 	[me@linuxbox ~]$ scp remote-sys:document.txt .
+		me@remote-sys's password:
+		document.txt 100% 5581 5.5KB/s 00:00
+		[me@linuxbox ~]$
+	- As with ssh, you may apply a username to the beginning of the remote host’s name if the desired remote host account name does not match that of the local system
+		[me@linuxbox ~]$ scp bob@remote-sys:document.txt .
+	
+	- The second SSH file-copying program is sftp which, as its name implies, is a secure replacement for the ftp program
+	- sftp works much like the original ftp program that we used earlier; however, instead of transmitting everything in cleartext, it uses an SSH encrypted tunnel
+	- sftp has an important advantage over conventional ftp in that it does not require an FTP server to be running on the remote host. It requires only the SSH server
