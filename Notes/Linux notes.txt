@@ -1758,3 +1758,137 @@ Secure Communication with Remote Hosts
 	- The second SSH file-copying program is sftp which, as its name implies, is a secure replacement for the ftp program
 	- sftp works much like the original ftp program that we used earlier; however, instead of transmitting everything in cleartext, it uses an SSH encrypted tunnel
 	- sftp has an important advantage over conventional ftp in that it does not require an FTP server to be running on the remote host. It requires only the SSH server
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------- Searching for Files ---------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Two tools that are used to find files on a system.
+
+● locate – Find files by name
+● find – Search for files in a directory hierarchy
+
+a command that is often used with file-search commands to process the resulting list of files.
+● xargs – Build and execute command lines from standard input
+
+commands to assist us in our explorations
+● touch – Change file times
+● stat – Display file or file system status
+
+
+
+---
+locate - Find files the easy way
+---
+
+	- The locate program performs a rapid database search of pathnames, and then outputs every name that matches a given substring.
+	- Ex: 	locate directory matching bin/.
+		[me@linuxbox ~]$ locate bin/zip
+		/usr/bin/zip
+		/usr/bin/zipcloak
+		/usr/bin/zipgrep
+		/usr/bin/zipinfo
+		/usr/bin/zipnote
+		/usr/bin/zipsplit
+	- we can combine locate with other tools such as grep to design more interesting searches
+	- 	[me@linuxbox ~]$ locate zip | grep bin
+		/bin/bunzip2
+		/bin/bzip2
+		/bin/bzip2recover
+		/bin/gunzip
+		/bin/gzip
+		/usr/bin/funzip 
+	- two most common ones found in modern Linux distributions are plocate and mlocate, though they are usually accessed by a symbolic link named locate
+	- The locate database is created by another program named updated
+	- it is run periodically as a cron job
+	- Most systems equipped with locate run updated once a day
+	- Since the database is not updated continuously, you will notice that very recent files do not show up when using locate
+	- To overcome this, it’s possible to run the updatedb program manually by becoming the superuser and running updatedb at the prompt
+	
+---
+find - find files the hard way
+---
+	
+	- find program searches a given directory (and its subdirectories) for files based on a variety of attributes
+	- find is given one or more names of directories to search
+	- Ex: [me@linuxbox ~]$ find ~
+	- The beauty of find is that it can be used to identify files that meet specific criteria and It does this through the (slightly strange) application of options, tests, and actions
+	
+	---
+	Tests
+	---
+	- to list directories from the search, we use the following search
+	- Ex:	[me@linuxbox ~]$ find ~ -type d | wc -l
+		1695
+	- Adding the test -type d limited the search to directories
+	- to limit the search to regular files with this test: 	[me@linuxbox ~]$ find ~ -type f | wc -l
+								38737
+	- Table: find File Types
+		File Type 	Description
+		b 		Block special device file
+		c 		Character special device file
+		d 		Directory
+		f 		Regular file
+		l 		Symbolic link
+	- We can also search by file size and filename by adding some additional tests
+		[me@linuxbox ~]$ find ~ -type f -name "*.JPG" -size +1M | wc -l
+		840
+	- we add the -name test followed by the wildcard pattern
+	- we add the -size test followed by the string “+1M”
+	- leading plus sign indicates that we are looking for files larger than the specified number
+	- A leading minus sign would change the meaning of the string to be smaller than the specified number
+	- Using no sign means, “match the value exactly.”
+	- The trailing letter M indicates that the unit of measurement is megabytes
+	- Table: find Size Units 
+		Character 	Unit
+		b 		512-byte blocks. This is the default if no unit is specified.
+		c 		Bytes.
+		w 		2-byte words.
+		k 		Kilobytes (units of 1024 bytes).
+		M 		Megabytes (units of 1048576 bytes).
+		G 		Gigabytes (units of 1073741824 bytes).
+	
+	---
+	Operators
+	---
+	- Even with all the tests that find provides, we may still need a better way to describe the logical relationships between the tests
+	- Ex: 	We would look for all the files with permissions that are not 0600 and the directories with permissions that are not 0700
+		[me@linuxbox ~]$ find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)
+	
+	---
+	Pre-defined actions
+	---
+	- results from our find command is useful but we really want to do is act on the items on the list.
+	- find allows actions to be performed based on the search results. 
+	- There are a set of predefined actions and several ways to apply user-defined actions
+	- Table: Predefined find Actions
+		Action 		Description
+		-delete 	Delete the currently matching file.
+		-ls 		Perform the equivalent of ls -dils on the matching file. Output is sent to standard output.
+		-print 		Output the full pathname of the matching file to standard output. This is the default action if no other action is specified.
+		-quit 		Quit once a match has been made
+	- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
