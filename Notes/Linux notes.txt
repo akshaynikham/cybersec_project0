@@ -1828,7 +1828,7 @@ find - find files the hard way
 								38737
 	- Table: find File Types
 		File Type 	Description
-		b 		Block special device file
+		b 		Block - special device file
 		c 		Character special device file
 		d 		Directory
 		f 		Regular file
@@ -1864,19 +1864,59 @@ find - find files the hard way
 	- results from our find command is useful but we really want to do is act on the items on the list.
 	- find allows actions to be performed based on the search results. 
 	- There are a set of predefined actions and several ways to apply user-defined actions
+	- Ex: find ~ -type f -name '*.bak' -delete
 	- Table: Predefined find Actions
 		Action 		Description
 		-delete 	Delete the currently matching file.
 		-ls 		Perform the equivalent of ls -dils on the matching file. Output is sent to standard output.
 		-print 		Output the full pathname of the matching file to standard output. This is the default action if no other action is specified.
 		-quit 		Quit once a match has been made
-	- 
+	- by default, an implied -and relationship between each test and action
+	
+	---
+	User defined actions
+	---
+	- In addition to the predefined actions, we can also invoke arbitrary commands
+	- The traditional way of doing this is with the -exec action -exec command {} ;
+	- command is the name of a command, {} is a symbolic representation of the current pathname, and the semicolon is a required delimiter indicating the end of the command.
+	- Ex: -exec rm '{}' ';'
+	- The find command lets you search for files or directories based on conditions (name, size, type, permissions, etc.).
+	- The -exec option tells find to run a command on each matching result.
+	
+	--
+	Improving Efficiency
+	--
+	- When the -exec action is used, it launches a new instance of the specified command each time a matching file is found
+	- There are two ways to combine search results and launch a single instance of the command, the traditional way, using the external command xargs
+		and alternatively using a new feature in find itself.
+	- We change the trailing semicolon character to a plus sign, we activate the ability of find to combine the results of the search into an argument list for a single execution of
+		the desired command
+	- Ex: find ~ -type f -name 'foo*' -exec ls -l '{}' +
 
+	---
+	xargs
+	---
+	- it accepts input from standard input and converts it into an argument list for a specified command
+	- 	find ~ -type f -name 'foo*' -print | xargs ls -l
+		-rwxr-xr-x 1 me me 224 2007-10-29 18:44 /home/me/bin/foo
+		-rw-r--r-- 1 me me 0 2016-09-19 12:53 /home/me/foo.txt
+	- find command piped into xargs, which, in turn, constructs an argument list for the ls command and then executes it
+	
+	---
+	options
+	---
+	- the options are used to control the scope of a find search
+	- they may be included with other tests and actions when constructing find expressions
+	- Table: find Options
+		Option 		Description
+		-depth 		Direct find to process a directory’s files before the directory itself. This option is automatically applied when the -delete action is specified
+		-maxdepth 	levels Set the maximum number of levels that find will descend into a directory tree when performing tests and actions
+		-mindepth 	levels Set the minimum number of levels that find will descend into a directory tree before applying tests and actions
+		-mount 		Direct find not to traverse directories that are mounted on other file systems.
+		-noleaf 	Direct find not to optimize its search based on the assumption that it is searching a Unix-like file system. This is needed when scanning DOS/Windows file
+				systems and CD-ROMs.
 
-
-
-
-
+http://www.gnu.org/software/findutils/
 
 
 
