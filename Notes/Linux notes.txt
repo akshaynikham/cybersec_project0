@@ -1919,14 +1919,84 @@ find - find files the hard way
 http://www.gnu.org/software/findutils/
 
 
+-----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------- Searching for Files ---------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+These are the file compression programs:
+● gzip – Compress or expand files
+● bzip2 – A block sorting file compressor
+These are the archiving programs:
+● tar – Tape archiving utility
+● zip – Package and compress files
+This is the file synchronization program:
+● rsync – Remote file and directory synchronization
 
 
+---
+Compressing Files
+---
+	- Compression algorithms (the mathematical techniques used to carry out the compression) fall into two general categories.
+		- Lossless: Lossless compression preserves all the data contained in the original.
+		- Lossy: Lossy compression, on the other hand, removes data as the compression is performed to allow more compression to be applied.
+			ex: Examples of lossy compression are JPEG (for images) and MP3 (for music)
+	
+	---
+	gzip
+	---
+	- The gzip program is used to compress one or more files
+	- When executed, it replaces the original file with a compressed version of the original
+	- The corresponding gunzip program is used to restore compressed files to their original, uncompressed form
+	- Ex: [me@linuxbox ~]$ gzip foo.txt
+	- Table: gzip Options
+		Option 		Long Option 	Description
+		-c 		--stdout
+				--to-stdout	Write output to standard output and keep the original files.
+		-d 		--decompress
+				--uncompress	Decompress. This causes gzip to act like gunzip.
+		-f 		--force 	Force compression even if a compressed version of the original file already exists.
+		-h 		--help 		Display usage information.
+		-l 		--list 		List compression statistics for each file compressed.
+		-r 		--recursive 	If one or more arguments on the command line is a directory, recursively compress files contained within them.
+		-t 		--test 		Test the integrity of a compressed file.
+		-v 		--verbose 	Display verbose messages while compressing.
+		-number 			Set amount of compression. number is an integer in the range of 1 (fastest, least compression) to 9 (slowest, most
+						compression). The values 1 and 9 may also be expressed as --fast and --best, respectively. The default value is 6.
+	- Alternately, there is a program supplied with gzip, called zcat, that is equivalent to gunzip with the -c option
 
+	---
+	bzip2
+	---
+	- The bzip2 program, by Julian Seward, is similar to gzip but uses a different compression algorithm that achieves higher levels of compression at the cost of compression
+		speed. 
+	- it works in the same fashion as gzip
+	- A file compressed with bzip2 is denoted with the extension .bz2
+	- All the options (except for -r) that was discussed for gzip are also supported in bzip2
+	- however, that the compression-level option (-number) has a somewhat different meaning to bzip2
+	- bzip2 comes with bunzip2 and bzcat for uncompressing files.
+	- bzip2 also comes with the bzip2recover program, which will try to recover damaged .bz2 files
 
+---
+Archiving Files
+---
+	- A common file-management task often used in conjunction with compression is archiving
+	- Archiving is the process of gathering up many files and bundling them together into a single large file
+	- Archiving is often done as part of system backups
 
-
-
-
+	---
+	tar
+	---
+	- the tar program is the classic tool for archiving files
+	- Its name, short for tape archive, reveals its roots as a tool for making backup tapes
+	- it is still used for that traditional task, it is equally adept on other storage devices
+	- The command syntax works like this:
+		tar mode[options] pathname...
+	- Table: tar Modes
+		Mode 		Description
+		c 		Create an archive from a list of files and/or directories.
+		x 		Extract an archive.
+		r 		Append specified pathnames to the end of an archive.
+		t 		List the contents of an archive.
 
 
 
