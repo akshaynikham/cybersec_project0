@@ -1920,7 +1920,7 @@ http://www.gnu.org/software/findutils/
 
 
 -----------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------ Searching for Files ---------------------------------------------------
+----------------------------------------------------- Archiving and Backup --------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------
 
 These are the file compression programs:
@@ -1968,12 +1968,12 @@ Compressing Files
 	bzip2
 	---
 	- The bzip2 program, by Julian Seward, is similar to gzip but uses a different compression algorithm that achieves higher levels of compression at the cost of compression
-		speed. 
+		speed
 	- it works in the same fashion as gzip
 	- A file compressed with bzip2 is denoted with the extension .bz2
 	- All the options (except for -r) that was discussed for gzip are also supported in bzip2
 	- however, that the compression-level option (-number) has a somewhat different meaning to bzip2
-	- bzip2 comes with bunzip2 and bzcat for uncompressing files.
+	- bzip2 comes with bunzip2 and bzcat for uncompressing files
 	- bzip2 also comes with the bzip2recover program, which will try to recover damaged .bz2 files
 
 ---
@@ -1997,6 +1997,88 @@ Archiving Files
 		x 		Extract an archive.
 		r 		Append specified pathnames to the end of an archive.
 		t 		List the contents of an archive.
+	- Unless we are operating as the superuser, files and directories extracted from archives take on the ownership of the user performing the restoration, rather than
+		the original owner
+	- The default for pathnames is relative, rather than absolute
+	- tar does this by simply removing any leading slash from the pathname when creating the archive
+	- tar can also make use of both standard input and output
+	- Ex: 	[me@linuxbox foo]$ cd
+		[me@linuxbox ~]$ find playground -name 'file-A' | tar cf - --filesfrom=- | gzip > playground.tgz
+	- 	--files-from=FILE
+		--files-from=FILE tells tar: “Don’t read file names from the command line — instead, read them from this file.”
+	- In Linux, - is a special symbol that usually means: “Read from standard input (stdin)” or “Write to standard output (stdout)”
+	- --files-from=- means: “Don’t read the list of files from a text file.
+		Instead, read it directly from whatever is coming through the pipe.”
+	- modern versions of GNU tar support both gzip and bzip2 compression directly with the use of the z and j options
+	- Ex: find playground -name 'file-A' | tar czf playground.tgz -T -
+	- Ex: find playground -name 'file-A' | tar cjf playground.tbz -T -
+	- the GNU version of tar (which is the version most often found in Linux distributions) supports them with the --wildcards option
+	- Ex: 	[me@linuxbox ~]$ cd foo
+		[me@linuxbox foo]$ tar xf ../playground2.tar --wildcards 'home/me/playground/dir-*/file-A'
+	
+	---
+	zip
+	---
+	- The zip program is both a compression tool and an archiver
+	- The file format used by the program is familiar to Windows users, as it reads and writes .zip files
+	- In its most basic usage, zip is invoked like this: zip options zipfile file...
+	- Ex: 	[me@linuxbox ~]$ zip -r playground.zip playground
+	- Unless we include the -r option for recursion, only the playground directory (but none of its contents) is stored
+	- zip will add files to the archive using one of two storage methods:
+		either it will “store” a file without compression, as shown here, or 
+		it will “deflate” the file that performs compression
+	- Extracting the contents of a zip file is straightforward when using the unzip program
+	- Ex: 	[me@linuxbox foo]$ unzip ../playground.zip
+	- One thing to note about zip (as opposed to tar) is that if an existing archive is specified, it is updated rather than replaced
+		meaning, existing file archive is preserved, but new files are added and matching files are replaced
+	- zip can make use of standard input and output, but its implementation is less useful
+	- Ex: 	[me@linuxbox ~]$ ls -l /etc/ | zip ls-etc.zip -
+ 		adding: - (deflated 80%
+	- unfortunately, the unzip program does not accept standard input, this prevents zip and unzip from being used together to perform network file copying like tar
+	- The unzip program allows its output to be sent to standard output when the -p (for pipe) option is specified
+	- Ex:	[me@linuxbox ~]$ unzip -p ls-etc.zip | less
+
+---
+Synchronizing Files and Directories
+---
+	- In the Unix-like world, the preferred tool for this task is rsync
+	- This program can synchronize both local and remote directories by using the rsync remote-update protocol
+	- which allows rsync to quickly detect the differences between two directories and perform the minimum amount of copying required to bring them into sync
+	- rsync is invoked like this: rsync options source destination
+	- where source and destination are one of the following:
+		● A local file or directory
+		● A remote file or directory in the form of [user@]host:path
+		● A remote rsync server specified with a URI of rsync://[user@]host[:port]/path
+	- Note that either the source or the destination must be a local file. Remote-to-remote copying is not supported
+	- Ex: 	[me@linuxbox ~]$ rsync -av playground foo
+		-a option (for archiving — causes recursion and preservation of file attributes)
+		-v option (verbose output) to make a mirror of the playground directory within foo
+	- By appending a trailing / to the source directory name, rsync will copy only the contents of the source directory and not the directory itself
+	- Ex:	[me@linuxbox ~]$ rsync source/ destination
+	- We can think of it as being like source/* in its outcome, but this method will copy all of the source directory’s content including the hidden files.
+	
+	---
+	Using rsync Over a Network
+	---
+	- Remote copying can be done in one of two ways
+	- The first way is with another system that has rsync installed, along with a remote shell program such as ssh
+	- Ex:	[me@linuxbox ~]$ sudo rsync -av --delete --rsh=ssh /etc /home /usr/local remote-sys:/backup		
+		first, --rsh=ssh instruct rsync to use ths ssh program for remote shell
+		Second, specified the remote host by prefixing its name (remote-sys) to the destination pathname
+	- The second way that rsync can be used to synchronize files over a network is by using an rsync server
+	- rsync can be configured to run as a daemon and listen to incoming requests for synchronization
+	- Ex:	[me@linuxbox ~]$ mkdir fedora-devel
+		[me@linuxbox ~]$ rsync -av –delete rsync://archive.linux.duke.edu/fedora/linux/development/rawhide/Everything/x86_64/os/ fedora-devel
+	 	we use the URI of the remote rsync server, which consists of a protocol (rsync://)
+		followed by the remote host-name (archive.linux.duke.edu), followed by the pathname of the repository
+
+
+
+
+
+
+
+
 
 
 
