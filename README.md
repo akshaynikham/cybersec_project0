@@ -33,7 +33,7 @@ A structured, long-term hands-on cybersecurity lab repository designed for caree
 
 | Lab ID | Title                                       | Status      | Tools Used                    |
 | ------ | ------------------------------------------- | ----------- | ----------------------------- |
-| Lab 1  | FTP Exploit on Metasploitable2              | ✅ Completed | Nmap, Metasploit, Linux Shell |
+| Lab 1  | FTP Exploit on Metasploitable2              | 🔜 To start  | Nmap, Metasploit, Linux Shell |
 | Lab 2  | *(Coming soon)* DVWA – Web App Exploitation | 🕒 Pending  | DVWA, Burp Suite, OWASP ZAP   |
 
 ➡️ Navigate to [`labs/`](labs/) for full lab documentation and walkthroughs.
