@@ -2073,14 +2073,145 @@ Synchronizing Files and Directories
 		followed by the remote host-name (archive.linux.duke.edu), followed by the pathname of the repository
 
 
+-----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------- Regular Expressions ---------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
 
 
+- regular expressions are symbolic notations used to identify patterns in text
+- in this discussion we will use POSIX standard (which will cover most of the command line tools)
 
+	---
+	grep
+	---
+	- stands for "global regular expression print"
+	- grep searches text files for the occurrence text matching a specified regular expression and outputs any line containing a match to standard output
+	- The grep program accepts options and arguments this way, where regex is a regular expression:
+		grep [options] regex [file...]
+	- Table: grep Options
+		Option 		Long Option 		Description
+		-i 		--ignore-case 		Ignore case. Do not distinguish between uppercase and lowercase characters.
+		-v 		--invert-match 		Invert match. Normally, grep prints lines that contain a match.
+							This option causes grep to print every line that does not contain a match.
+		-c 		--count 		Print the number of matches (or non-matches if the -v option is also specified) instead of the lines themselves.
+		-l 		--files-with-matches 	Print the name of each file that contains a match instead of the lines themselves.
+		-L 		--files-without-match 	Like the -l option, but print only the names of files that do not contain matches.
+		-n 		--line-number 		Prefix each matching line with the number of the line within the file.
+		-h 		--no-filename 		For multi-file searches, suppress the output of filenames.
+		-q 		--quiet, --silent 	Suppress all output. This is useful in shell scripting when we want to test if a match was found.
+	- Ex: 	[me@linuxbox ~]$ grep bzip dirlist*.txt
+		dirlist-bin.txt:bzip2
+		dirlist-bin.txt:bzip2recover
+	
+	---
+	Metacharacters and Literals
+	---
+	- In addition to literals, regular expression may also include meta-characters that are used to specify more complex matches.
+	- regex metacharacters consists of the following: ^ $ . [ ] { } - ? * ( ) | \
+	- All other characters are considered literals
+	- though the backslash character is used in a few cases to create meta sequences, as well as allowing the metacharacters to be escaped and treated as literals instead of being 		interpreted as metacharacters.
+	
+	---
+	The Any Character
+	---
+	- The first metacharacter we will look at is the dot or period character, which is used to match any character
+	- it will match any character in that character position.
+	- Ex:	[me@linuxbox ~]$ grep -h '.zip' dirlist*.txt
+	- In the above example, the program zip is not returned. This is because the inclusion of dot metacharacter in our regular expression increases the length of the required match
+		to four characters, one of which precede the "Z"
+	
+	---
+	Anchors 
+	---
+	- The caret (^) and dollar sign ($) characters are treated as anchors in regular expressions
+	- this means they cause the match to occur only if the regular expression is found at the beginning of the line (^) or at the end of the line ($)
+	- Ex:	[me@linuxbox ~]$ grep -h '^zip' dirlist*.txt
+	- Ex:	[me@linuxbox ~]$ grep -h 'zip$' dirlist*.txt
+	- Ex: 	[me@linuxbox ~]$ grep -h 'zip$' dirlist*.txt
+	
+	---
+	Bracket Expressions and Character Classes
+	---
+	- in addition to matching any character at a given position in our regular expression, we can also match a single character from a specified set of characters by using the bracket
+		expression
+	- Ex: 	[me@linuxbox ~]$ grep -h '[bg]zip' dirlist*.t
+	- using a two-character set, we match any line that contains the string bzip or gzip:
+	- a set may contain any number of characters, and metacharacters lose their meaning when placed within a brackets.
+	- there are two cases in which metacharacters are used within bracket expressions and have different meanings
+	- the first is the caret (^) that is used to indicate negation, the second is the dash (-), which is used to indicate a character range
+	
+	---
+	Negation
+	---
+	- if the first character in a bracket expression is a caret (^), the remaining characters are taken to be a set of characters that must not be present at the given character 			position 
+	- Ex: 	[me@linuxbox ~]$ grep -h '[^bg]zip' dirlist*.txt
+	- A negated character set still requires a character at the given position, but the character must not be a member of the negated set
+	
+	---
+	POSIX Character Classes
+	---
+	- 	ASCII: 	Old encoding standard (0–127).
+			Regex ranges like [A-Z] or [0-9] work only for English letters/numbers.
+		POSIX:	A UNIX standard for portability.
+			Defines character classes like [[:alpha:]], [[:digit:]], [[:space:]].
+			Locale-aware and more reliable across systems.
+		Effect on Regex:
+			ASCII-based regex = simple but limited to English.
+			POSIX regex = portable, locale-aware, and safer for multi-language environments.
+	- As the popularity of Unix spread beyond the United States, there grew a need to support characters not found in U.S. English
+	- The ASCII table was expanded to use a full eight bits, adding characters 128-255, which accommodated many more languages.
+	- To support this ability, the POSIX standards introduced a concept called a locale, which could be adjusted to select the character set needed for a particular location
+	- Table: POSIX Character Classes
+		Character Class 	Description
+		[:alnum:] 		The alphanumeric characters. In ASCII, equivalent to: [A-Za-z0-9]
+		[:word:] 		The same as [:alnum:], with the addition of the underscore (_) character.
+		[:alpha:] 		The alphabetic characters. In ASCII, equivalent to: [A-Za-z]
+		[:blank:] 		Includes the space and tab characters.
+		[:cntrl:] 		The ASCII control codes. Includes the ASCII characters 0 through 31 and 127.
+		[:digit:] 		The numerals 0 through 9.
+		[:graph:] 		The visible characters. In ASCII, it includes characters 33 through 126.
+		[:lower:] 		The lowercase letters.
+		[:punct:] 		The punctuation characters. In ASCII, equivalent to: [-!"#$%&'()*+,./:;<=>?@[\\\]_`{|}~]
+		[:print:] 		The printable characters. All the characters in [:graph:] plus the space character.
+		[:space:] 		The whitespace characters including space, tab, carriage return, newline, vertical tab, and form feed. In ASCII, equivalent to: [ \t\r\n\v\f]
+		[:upper:] 		The uppercase characters.
+		[:xdigit:] 		Characters used to express hexadecimal numbers. In ASCII, equivalent to: [0-9A-Fa-f]
 
-
-
-
-
-
-
-
+	---
+	POSIX Basic vs. Extended Regular Expressions
+	---
+	- POSIX splits regular expression implementation into two kinds: basic regular expression (BRE) and extended regular expression (ERE)
+	- grep implements BRE
+	- whats the difference b/w BRE and ERE? it's the matter of metacharacters.
+	- with BRE, the following metacharacters are recognized: ^ $ . [ ] * all other characters are considered literals
+	- with ERE, the following  metacharacters (and their associated functions) are added: ( ) { } ? + |
+	- however, the (, ), {, and } characters are treated as metacharacters in BRE if they are escaped with a backslash
+	- whereas with ERE, preceding any metacharacter with a backslash causes it to be treated as a literal
+	
+	---
+	Alternation
+	---
+	- The first of the extended regular expression features we will discuss is called Alternation
+	- this facility allows a match to occur from amoung a set of expressions
+	- Ex: 	[me@linuxbox ~]$ echo "AAA" | grep -E 'AAA|BBB'
+		AAA
+		[me@linuxbox ~]$ echo "BBB" | grep -E 'AAA|BBB'
+		BBB
+		[me@linuxbox ~]$ echo "CCC" | grep -E 'AAA|BBB'
+	- -E option in grep specifies to the use of ERE
+	- we enclose the regular expression in quotes to prevent the shell form interpreting the vertical bar | metacharacter of pipe oprator 
+	
+	---
+	Quantifiers
+	---
+	- Extended regular expressions support several ways to specify the number of times an element is matched
+	- ? - Match an Element Zero or One Time
+	- * - Match an Element Zero or More Times
+	- + - Match an Element One or More Times
+	- { } - Match an Element a Specific Number of Times
+	- Table: Specifying the Number of Matches
+		Specifier 	Meaning
+		{n} 		Match the preceding element if it occurs exactly n times.
+		{n,m} 		Match the preceding element if it occurs at least n times but no more than m times.
+		{n,} 		Match the preceding element if it occurs n or more times.
+		{,m} 		Match the preceding element if it occurs no more than m times.
