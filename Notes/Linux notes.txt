@@ -2115,7 +2115,7 @@ Synchronizing Files and Directories
 	The Any Character
 	---
 	- The first metacharacter we will look at is the dot or period character, which is used to match any character
-	- it will match any character in that character position.
+	- it will match any character in that character position
 	- Ex:	[me@linuxbox ~]$ grep -h '.zip' dirlist*.txt
 	- In the above example, the program zip is not returned. This is because the inclusion of dot metacharacter in our regular expression increases the length of the required match
 		to four characters, one of which precede the "Z"
@@ -2215,3 +2215,213 @@ Synchronizing Files and Directories
 		{n,m} 		Match the preceding element if it occurs at least n times but no more than m times.
 		{n,} 		Match the preceding element if it occurs n or more times.
 		{,m} 		Match the preceding element if it occurs no more than m times.
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- Text Processing -----------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+cat - concatenate files and print on the standard output
+sort - sort lines of text files
+uniq - report or omit repeated lines
+cut - remove sections from each lines of files
+paste - merge lines of lines
+join - join the lines of two files on a command field
+tac - concatenate and print files in reverse
+rev - reverse lines characterwise
+comm - compare two sorted files line by line
+diff - compare file line by line 
+patch - apply a diff file to an original
+tr - translate or delete characters
+sed - stream editor for filtering and transforming text
+aspell - interactive spell checker
+
+
+---
+Applications of Text
+---
+	
+	---
+	Documents
+	---
+	- One popular approach is to write a large document in a text format and then embed a markup language to describe the formatting of the finished document
+
+	---
+	Web Pages
+	---
+	- The world’s most popular type of electronic document is probably the web page
+	- Web pages are text documents that use either Hypertext Markup Language (HTML) or Extensible Markup Language (XML) as markup languages to describe the document’s visual format
+	
+	---
+	Email
+	---
+	- Email is an intrinsically text-based medium
+	- Even non-text attachments are converted into a text representation for transmission. 
+	- We can see this for ourselves by downloading an email message and then viewing it in less. 
+	- We will see that the message begins with a header that describes the source of the message and the processing it received during its
+		journey, followed by the body of the message with its content.
+
+	---
+	Printer Output
+	---
+	- On Unix-like systems, output destined for a printer is sent as plain text or, if the page
+		contains graphics, is converted into a text format page description language known as
+		PostScript, which is then sent to a program that generates the graphic dots to be printed. 
+	
+	---
+	Program Source Code
+	---
+	- Many of the command line programs found on Unix-like systems were created to support system administration and software development, and text processing programs are no 			exception
+	- Many of them are designed to solve software development problems. The reason text processing is important to software developers is that all software starts out as text
+	- Source code, the part of the program the programmer actually writes, is always in text format
+	
+---
+Revisiting Some Old Friends
+---
+	---
+	cat
+	---
+	- helps visualize text context.
+	- -A option, which is used to display nonprinting characters in the text
+		which helps us to know whether control characters are present.
+	- -n, which numbers lines, and -s, which suppresses the output of multiple blank lines
+	- 	[me@linuxbox ~]$ cat > foo.txt
+		The quick brown fox
+
+		jumps over the lazy dog.
+		[me@linuxbox ~]$ cat -ns foo.txt
+		 1 The quick brown fox
+		 2
+		 3 jumps over the lazy dog.
+	
+	---
+	sort
+	---
+	- the sort program sorts the content of the standard input, one or more files specified on the command line, and sends the results to standard output
+	- Ex:	sort file1.txt file2.txt file3.txt > final_sorted_list.txt
+	- 	Table: Common sort Options
+		Option 		Long Option 		Description
+		-b 		--ignore-leading-blanks By default, sorting is performed on the entire line, starting with the first character in the line. 
+							This option causes sort to ignore leading spaces in lines and calculates sorting based on the first 
+							non-whitespace character on the line.
+		-f 		--ignore-case 		Make sorting case-insensitive.
+		-n 		--numeric-sort 		Perform sorting based on the numeric evaluation of a string.
+							Using this option allows sorting to be performed on numeric values rather than alphabetic values.
+		-r 		--reverse 		Sort in reverse order. Results are in descending rather than ascending order.
+		-k 		--key=field1[,field2] 	Sort based on a key field located from field1 to field2 rather than the entire line. See the following
+							discussion.
+		-m 		--merge 		Treat each argument as the name of a presorted file. Merge multiple files into a single sorted result
+							without performing any additional sorting.
+		-o 		--output=file 		Send sorted output to file rather than standard output.
+		-t 		--field-separator=char 	Define the field-separator character. By default fields are separated by spaces or tabs.
+	- Ex:	[me@linuxbox ~]$ ls -l /usr/bin | sort -nrk 5 | head
+	- whitespace characters (spaces and tabs) are used as delimiters between fields and that the delimiters are included in the field when sorting is performed.
+	- Ex:	[me@linuxbox ~]$ sort --key=1,1 --key=2n distros.txt
+		--key=1,1 start at field 1 and end at field 1
+		2n, which means field 2 is the sort key and that the sort should be numeric
+	- Ex:	[me@linuxbox ~]$ sort -k 3.7nbr -k 3.1nbr -k 3.4nbr distros.txt
+		
+	---
+	uniq
+	---
+	- compared to sort, uniq program is lightweight
+	- when given a sorted file (or standard input), it removes any duplicate lines and sends the results to standard output
+	- often used in conjunction with sort clean the output of duplicates
+	- GNU version of sort provides a -u option which removes duplicates from the sorted output
+	- Table: common uniq option
+		Option 		Long Option 		Description
+		-c 		--count 		Output a list of duplicate lines preceded by the number of times the line occurs.
+		-d 		--repeated 		Output only repeated lines, rather than unique lines.
+		-f n 		--skip-fields=n 	Ignore n leading fields in each line. Fields are separated by whitespace as they are in sort; however, unlike sort, uniq has
+							no option for setting an alternate field separator.
+		-i 		--ignore-case 		Ignore case during the line comparisons.
+		-s n 		--skip-chars=n 		Skip (ignore) the leading n characters of each line.
+		-u 		--unique 		Output only unique lines. Lines with duplicates are ignored.
+
+---
+Slicing and Dicing
+---
+	---
+	cut
+	---
+	- the cut program is used to extract a section of line and output the extracted section to standard output
+	- it can accept multiple file arguments or input from standard input 
+	- Table: cut Selection Options
+		Option 		Long Option 		Description
+		-c list 	--characters=list 	Extract the portion of the line defined by list. The list may consist of one or more comma-separated numerical ranges.
+		-f list 	--fields=list 		Extract one or more fields from the line as defined by list. The list may contain one or more fields or field ranges
+							separated by commas.
+		-d delim 	--delimeter=delim 	When -f is specified, use delim as the field delimiting character. By default, fields must be separated by a single tab character.
+				--complement 		Extract the entire line of text, except for those portions specified by -c and/or -f.
+	---
+	paste
+	---
+	- paste command does the opposite of cut
+	- rather than extracting a column of text from a file, it adds one or more columns of text or file
+	- it does this by reading multiple files and combining the files found in each file into a single stream on standard output
+	- it accepts multiple file arguments and/or standard input
+	- Ex: [me@linuxbox ~]$ paste distros-dates.txt distros-versions.txt
+	
+	---
+	join
+	---
+	- in some ways join is like paste in that it adds columns to a file
+	- join operation is usually performed in relational database where data from multiple tables with a shared key filed is combined to form a desired result
+	- the join program performs the same operation, it joins data from multiple files based on a shared key field
+	- by default, join uses whitespace as the input field delimiter and a single space as the output field delimiter
+	
+	---
+	tac
+	---
+	- The tac command works like cat only in reverse
+	- It concatenates files in reverse order
+	- One way to use tac is to re-order log files
+
+	---
+	rev
+	---
+	- In a similar vein, the rev command reverses the characters in a string
+	- Ex: 	[me@linuxbox ~]$ echo “This is a test.” | rev
+		.tset a si sihT	
+	
+---
+Comparing Text
+---
+- It is often useful to compare versions of text files
+- use case: a sys admin may need to compare two versions of existing configuration file
+
+	---
+	comm
+	---
+	- The comm program compares two text files and displays the lines that are unique to each one and the lines they have in common 
+	- Ex: 	[me@linuxbox ~]$ comm file1.txt file2.txt
+		a
+				b
+				c
+				d
+			e
+	- The first column contains lines unique to the first file argument, the second column contains the lines unique to the second file argument, and the third column contains the 		lines shared by both files
+	- comm supports options in the form -n, where n is either 1, 2, or 3. When used, these options specify which columns to suppress
+	- Ex: 	[me@linuxbox ~]$ comm -12 file1.txt file2.txt
+		b
+		c
+		d
+	
+	---
+	diff
+	---
+	- Like the comm program, diff is used to detect the differences between files
+	- diff is a much more complex tool, supporting many output formats and the ability to process large collections of text files at once
+	- diff is often used by software developers to examine changes between different versions of program source code and thus has the
+		ability to recursively examine directories of source code, often referred to as source trees
+	- One common use for diff is the creation of diff files or patches that are used by programs such as patch to convert one version of a file (or files) to another version
+	- Ex:	[me@linuxbox ~]$ diff file1.txt file2.txt 
+	
+
+
+
+
+
+
+
+
