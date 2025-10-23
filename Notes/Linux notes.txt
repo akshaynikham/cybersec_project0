@@ -2415,8 +2415,161 @@ Comparing Text
 	- diff is often used by software developers to examine changes between different versions of program source code and thus has the
 		ability to recursively examine directories of source code, often referred to as source trees
 	- One common use for diff is the creation of diff files or patches that are used by programs such as patch to convert one version of a file (or files) to another version
-	- Ex:	[me@linuxbox ~]$ diff file1.txt file2.txt 
+	- Ex:	[me@linuxbox ~]$ diff file1.txt file2.txt
+	- Ex:	In the default format, each group of changes is preceded by a change command in the form of range operation range to describe the positions and types of changes required
+		to convert the first file to the second file
+	- In this format, a range is a comma-separated list of the starting line and the ending line
+	- Table: diff Change Commands
+		Change 		Description
+		r1ar2 		Append the lines at the position r2 in the second file to the position r1 in the first file.
+		r1cr2 		Change (replace) the lines at position r1 with the lines at the position r2 in the second file.
+		r1dr2 		Delete the lines in the first file at position r1, which would have appeared at range r2 in the second file
+	- since default is not the widely used optional format, there are two more popular format
+		- context format and unified format
+	- context format: 	[me@linuxbox ~]$ diff -c file1.txt file2.txt
+				*** file1.txt2025-12-23 06:40:13.000000000 -0500
+				--- file2.txt2025-12-23 06:40:34.000000000 -0500
+				***************
+				*** 1,4 ****
+				- a
+				  b
+				  c
+				  d
+				--- 1,4 ----
+				  b
+				  c
+				  d
+				+ e	
+	- in context format, the output begins with the names of the two files and their timestamps
+		the first file is marked with asterisks and second file is marked with dashes
+	- in first group we see 
+		*** 1,4 ****
+		which indicates line 1 through 4 in the first table
+	- later we see
+		--- 1,4 ---
+		which indicated line 1 through 4 in the second table
+	- Table: diff Context Format Change Indicators
+		Indicator 		Meaning
+		blank 			A line shown for context. It does not indicate a difference between the two files.
+		- 			A line deleted. This line will appear in the first file but not in the second file.
+		+ 			A line added. This line will appear in the second file but not in the first file.
+		! 			A line changed. The two versions of the line will be displayed, each in its respective section of the change group.
+	- unified format: 	[me@linuxbox ~]$ diff -u file1.txt file2.txt
+				--- file1.txt2008-12-23 06:40:13.000000000 -0500
+				+++ file2.txt2008-12-23 06:40:34.000000000 -0500
+				@@ -1,4 +1,4 @@
+				-a
+				 b
+				 c
+				 d
+				+e
+	- the most notable difference between the context and unified format is the elimination of the duplicate lines of context, making the results of the unified format shorter than 		those of the context file
+	- Table: diff Unified Format Change Indicators
+		Character 	Meaning
+		blank 		This line is shared by both files.
+		- 		This line was removed from the first file.
+		+ 		This line was added to the first file.
 	
+	---
+	patch
+	---
+	- the patch program is used to apply changes to text files
+	- it accepts output from diff and is generally used to convert older version files into newer versions
+	- Using diff/patch offers two significant advantages.
+		1. The diff file is small, compared to the full size of the source tree.
+		2. The diff file concisely shows the change being made, allowing reviewers of the patch to quickly evaluate it.
+	- To prepare a diff file for use with patch, the GNU documentation (see Further Reading below) suggests using diff as follows:
+		diff -Naur old_file new_file > diff_file
+
+---
+Editing on the Fly
+---
+
+Our experience with text editors has been largely interactive, meaning that we manually move a cursor around and then type our changes.
+However, there are non-interactive ways to edit text as well
+	
+	---
+	tr
+	---
+	- the tr program is used to transliterate characters
+	- We can think of this as a sort of character-based search-and-replace operation
+	- Transliteration is the process of changing characters from one alphabet to another
+	- Ex:	[me@linuxbox ~]$ echo "lowercase letters" | tr a-z A-Z
+		LOWERCASE LETTERS
+	- tr accepts two arguments: a set of characters to convert from and a corresponding set of characters to convert to
+	- Character sets may be expressed in one of three ways:
+		1. An enumerated list. For example, ABCDEFGHIJKLMNOPQRSTUVWXYZ
+		2. A character range. For example, A-Z. Note that this method is sometimes subject to the same issues as other commands, because of the locale collation order, and
+			thus should be used with caution
+		3. POSIX character classes. For example, [:upper:]
+	- it is possible for the first set to be larger than the second, particularly if we want to convert multiple characters to a single character.
+	- Ex:	[me@linuxbox ~]$ echo "lowercase letters" | tr [:lower:] A
+		AAAAAAAAA AAAAAAA
+	- In addition to transliteration, tr allows characters to simply be deleted from the input stream
+	- tr can perform another trick, too. Using the -s option, tr can “squeeze” (delete) repeated instances of a character.
+	- Ex:	[me@linuxbox ~]$ echo "aaabbbccc" | tr -s ab
+		abccc
+	
+	---
+	sed
+	---
+	- The name sed is short for stream editor
+	- It performs text editing on a stream of text, either a set of specified files or standard input
+	- in general sed works in either a single editing command or a name of a script file containing multiple commands
+	- Ex:	[me@linuxbox ~]$ echo "front" | sed 's/front/back/'
+		back
+	- in the above example we have used / (slash character) as delimiter. the choice of delimiter character is arbitrary	
+	- Ex:	[me@linuxbox ~]$ echo "front" | sed 's_front_back_'
+		back
+	- we have used _ in the above example
+	- we use address to specify which line of input stream will be edited
+	- Ex:	[me@linuxbox ~]$ echo "front" | sed '1s/front/back/'
+		back
+	- Table: sed Address Notation
+		Address 		Description
+		n 			A line number where n is a positive integer.
+		$ 			The last line.
+		/regexp/ 		Lines matching a POSIX basic regular expression. Note that the regular expression is delimited by slash characters. Optionally,
+					the regular expression may be delimited by an alternate character, by specifying the expression with \cregexpc,
+					where c is the alternate character. 
+		addr1,addr2 		A range of lines from addr1 to addr2, inclusive. Addresses may be any of the single address forms listed earlier. 
+		first~step 		Match the line represented by the number first, then each subsequent line at step intervals. For example 1~2 refers to
+					each odd numbered line, and 5~5 refers to the fifth line and every fifth line thereafter.
+		addr1,+n 		Match addr1 and the following n lines.
+		addr! 			Match all lines except addr, which may be any of the forms listed earlier.
+	- Table: sed Basic Editing Commands
+		Command 		Description
+		= 			Output the current line number.
+		a 			Append text after the current line.
+		d 			Delete the current line.
+		i 			Insert text in front of the current line.
+		p			Print the current line. By default, sed prints every line and only edits lines that match a specified address within the file. The default behavior 					can be overridden by specifying the -n option.
+		q 			Exit sed without processing any more lines. If the
+		-n 			option is not specified, output the current line.
+		Q 			Exit sed without processing any more lines.
+		s/regexp/replacement/ 	Substitute the contents of replacement wherever regexp is found. replacement may include the special character &, which is equivalent to the text
+					matched by regexp. In addition, replacement may include the sequences \1 through \9, which are the contents of the corresponding subexpressions
+					in regexp. For more about this, see the discussion of back references below. After the trailing slash following replacement, an optional flag may be
+					specified to modify the s command’s behavior. 
+		y/set1/set2 		Perform transliteration by converting characters from set1 to the corresponding characters in set2. Note that unlike tr, sed requires that both sets 					be of the same length.
+	
+	---
+	aspell
+	---
+	- the last tool we will look at is aspell, an interactive spelling checker
+	- it has the ability to intelligently check various types of text files, including HTML documents, C/C++ programs, email messages, and other kinds of specialized texts.
+	- syntax: 	aspell check textfile
+
+
+
+
+
+
+
+
+
+
+
 
 
 
