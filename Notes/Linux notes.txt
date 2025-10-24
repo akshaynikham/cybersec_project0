@@ -2561,6 +2561,111 @@ However, there are non-interactive ways to edit text as well
 	- syntax: 	aspell check textfile
 
 
+-----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------- Formatting Output -----------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+● nl – Number lines
+● fold – Wrap each line to a specified length
+● fmt – A simple text formatter
+● pr – Prepare text for printing
+● printf – Format and print data
+● groff – A document formatting system
+
+
+---
+Simple Formatting Tools
+---
+	---
+	nl
+	---
+	- The nl program is a rather arcane tool used to perform a simple task
+	- It numbers lines. In its simplest use, it resembles cat -n	
+	- Ex:	[me@linuxbox ~]$ nl distros.txt | head
+		1 SUSE 10.2 12/07/2006
+ 		2 Fedora 10 11/25/2008
+ 		3 SUSE 11.0 06/19/2008
+ 		4 Ubuntu 8.04 04/24/2008
+ 		5 Fedora 8 11/08/2007
+ 		6 SUSE 10.3 10/04/2007
+	- Like cat, nl can accept either multiple files as command line arguments or standard input
+	- nl supports a concept called “logical pages” when numbering
+	- 	+-----------------------+
+		|  Header Section       |  (H)
+		+-----------------------+
+		|  Body Section         |  (B) ← Normal content (this is where numbering happens)
+		+-----------------------+
+		|  Footer Section       |  (F)
+		+-----------------------+
+	- If nl is given multiple files, it treats them as a single stream of text
+	- Table: nl Markup
+		Markup 		Meaning
+		\:\:\: 		Start of logical page header
+		\:\: 		Start of logical page body
+		\: 		Start of logical page footer
+	- Each of the markup elements listed in Table above must appear alone on its own line
+	- Table: Common nl Options
+		Option 		Meaning
+		-b 		style Set body numbering to style, where style is one of the following:
+				a = Number all lines
+				t = Number only non-blank lines. This is the default.
+				n = None
+				pregexp = Number only lines matching basic regular expression regexp.
+		-f style 	Set footer numbering to style. The default is n (none).
+		-h style 	Set header numbering to style. The default is n (none).
+		-i 		number Set page numbering increment to number. The default is one.
+		-n 		format Sets numbering format to format, where format is one of the following:
+				ln = Left justified, without leading zeros.
+				rn = Right justified, without leading zeros. This is the default.
+				rz = Right justified, with leading zeros.
+		-p 		Do not reset page numbering at the beginning of each logical page.
+		-s 		string Add string to the end of each line number to create a separator. The default is a single tab character.
+		-v 		number Set first line number of each logical page to number. The default is one.
+		-w 		width Set width of the line number field to width. The default is 6.
+	- Ex:	[me@linuxbox ~]$ sort -k 1,1 -k 2n distros.txt | sed -f distros-nl.sed | nl
+	
+	---
+	fold - Wrap Each Line to a specified length
+	---
+	- Folding is the process of breaking lines of text at a specified width
+	- Like our other commands, fold accepts either one or more text files or standard input
+	- Ex:	[me@linuxbox ~]$ echo "The quick brown fox jumps over the lazy dog." | fold -w 12
+		The quick br
+		own fox jump
+		s over the l
+		azy dog.
+	- in the above example we specified the width to 12 characters. The default value is 80
+	- The addition of the -s option will cause fold to break the line at the last available space before the line width is reached
+	
+	---
+	fmt – A Simple Text Formatter
+	---
+	- The fmt program also folds text, plus a lot more
+	- It accepts either files or standard input and performs paragraph formatting on the text stream
+	- it fills and joins lines in text while preserving blank lines and indentation.
+	- Ex:	[me@linuxbox ~]$ fmt -cw 50 fmt-info.txt
+	- Ex:	[me@linuxbox ~]$ fmt -w 50 -p '# ' fmt-code.txt
+	
+	---
+	pr - format text for printing
+	---
+	- The pr program is used to paginate text
+	- When printing text, it is often desirable to separate the pages of output with several lines of whitespace, to provide a top margin and a bottom margin for each page	
+	- Further, this whitespace can be used to insert a header and footer on each page
+	- Ex:	[me@linuxbox ~]$ pr -l 15 -w 65 distros.txt
+	- In this example, we employ the -l option (for page length) and the -w option (page width) to define a “page” that is 65 columns wide and 15 lines long. pr paginates the
+		contents of the distros.txt file, separates each page with several lines of whitespace, and creates a default header containing the file modification time, filename, and 		page number
+
+
+
+
+
+
+
+
+
+
+
 
 
 
