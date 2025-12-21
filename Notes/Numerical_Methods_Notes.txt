@@ -35,3 +35,9 @@ Machine Epsilon:
 
 Interpolation:
 	- interpolation is estimating unknown data points between known values by fitting a simple function (like a line or curve) through the given points, effectively "filling the gaps" in a dataset to 		predict intermediate values, unlike extrapolation, which guesses values outside the range.
+	- Curve passes exactly through all data points
+	- Used when data is accurate
+
+Approximation:
+	- Curve does not necessarily pass through all points
+	- Used when data has errors/noise:
