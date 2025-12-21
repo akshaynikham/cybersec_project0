@@ -1,0 +1,37 @@
+Numerical Analysis? -
+	Numerical Analysis is the study of methods to find approximate solutions to mathematical problems using numbers and computers.
+
+Why “approximate” solutions?
+	- Computers cannot store infinite digits
+	- Real numbers like π, √2, e are irrational
+	- Rounding is unavoidable
+
+**Numerical methods trade exactness for feasibility.
+
+Why Numerical Methods Are Needed?
+
+	Real-world problems:
+		- Engineering equations
+		- Physics simulations
+		- Machine learning
+		- Control systems
+		- Cybersecurity simulations (optimization, crypto, modeling)
+
+**In C, the name of an array itself is a pointer to its first element.
+
+Function Prototyping: 
+	A function prototype is a declaration of a function that tells the compiler about the function's name, return type, and parameters before the 	function is actually defined (written out).
+
+Loss of Significance:
+	- also called "Catastrophic Cancellation"
+	- is a phenomenon in floating-point math where the precision of your result suddenly drops, often leaving you with a number that is mostly "garbage" or "noise."
+	- It typically happens in two specific scenarios: when you subtract two numbers that are very close in value, or when you add/subtract numbers of wildly different scales.
+		- The "Subtraction" Trap (Catastrophic Cancellation)
+		- The "Scale" Trap (Absorption)
+
+Machine Epsilon: 
+	- The smallest difference between 1.0 and the next representable floating-point number. 
+	- It represents the "rounding unit" or the maximum relative error of a computer's number system. If a change is smaller than Epsilon, the computer "ignores" it.
+
+Interpolation:
+	- interpolation is estimating unknown data points between known values by fitting a simple function (like a line or curve) through the given points, effectively "filling the gaps" in a dataset to 		predict intermediate values, unlike extrapolation, which guesses values outside the range.
