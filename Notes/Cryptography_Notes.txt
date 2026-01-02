@@ -1,3 +1,36 @@
   -------------------
- | Cryptography Notes |
+ | Cryptography Notes | - Reference = serious cryptography by jean-philippe Aumasson
   -------------------
+
+
+Basics: 
+
+	- When encrypting a message, plaintext refers to the unencrypted message and ciphertext to the encrypted message. 
+	- therefore a cipher composed of two functions: encryption turns the plantext into a ciphertext and a decryption turns a ciphertext back into plaintext.
+	- a cipher E taking an input plaintext P and a key K and producing a ciphertext C as output is represented a C = E(K,P).
+
+Classical Cipher:
+
+	- The Caesar cipher:
+		- It encrypts the message by shifting each of the letters down three positions in the alphabet wrapping back around to A if the shift reaches Z.
+	- The Vigenère cipher:
+		- similar to Caesar cipher, except that letters aren't shifted by three places but rather by values defined by a key, a collection of letters that represent numbers based on 			their position in the alphabet.
+How cipher works:
+	
+	- Basing on simple Caesar and Vigenère cipher we can try to abstract out the working of a cipher by identifying its two main components: a permutation and a mode of operation.
+	- a permutation is a function that transforms an item  ( in cryptography, a letter or a group of bits ) such that each item has its unique inverse ( ex, the Caesar cipher three-		letter shift).
+	- A mode of operation is an algorithm that uses a permutation to process a message of arbitrary size.
+
+The permutation:
+
+	- A cipher substitution can't be just any substitution. It should be a permutation, which is a rearrangement of the letters A to Z such that each letter has a unique inverse.
+	- Still, not every permutation is secure. To be secure, a cipher's permutation should satisfy three criteria:
+		1. The permutation should be determined by the key: This keeps the permutation secret as long as the key is secret.
+		2. Different key should result in different permutations: Otherwise, it becomes easier to decrypt without the key: if different key results in identical permutations, that 			means there are fewer possibilities to try when decrypting a substitution.
+		3. The permutation should look random, loosely speaking: There should be no pattern in the ciphertext after performing a permutation, because patterns make a permutation 			predictable for an attacker and therefore less secure.
+
+The mode of operation:
+
+	- The mode of operation (or mode) of a cipher mitigates the exposure of duplicate letters in the plaintext by using different permutations for duplicate letters.
+	- To build secure cipher, you must combine a secure permutation with a secure mode.
+	- Ideally this combination prevents attackers from learning anything about a message other than its length.
