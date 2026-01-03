@@ -34,3 +34,59 @@ The mode of operation:
 	- The mode of operation (or mode) of a cipher mitigates the exposure of duplicate letters in the plaintext by using different permutations for duplicate letters.
 	- To build secure cipher, you must combine a secure permutation with a secure mode.
 	- Ideally this combination prevents attackers from learning anything about a message other than its length.
+
+
+GCD (Greatest Common Divisor) - 
+	The largest number that divides both numbers exactly.
+	Two numbers must be coprime (GCD = 1) for modular inverse to exist.
+
+Euclidean Algorithm (Fast GCD) -
+	GCD(48, 18)
+	48 = 18 × 2 + 12
+	18 = 12 × 1 + 6
+	12 = 6 × 2 + 0
+	→ GCD = 6
+	This algorithm is efficient even for huge numbers.
+
+
+Modular Inverse (Core Crypto Concept) -
+	a × x ≡ 1 (mod n)
+	3 × x ≡ 1 (mod 11)
+	3 × 4 = 12 ≡ 1 (mod 11)
+
+Why Modular Inverse Is Crucial?
+	In RSA:
+	Encryption uses exponent e
+	Decryption uses exponent d
+	And: e × d ≡ 1 (mod φ(n))
+
+Coprime numbers (or relatively prime/mutually prime) are a set of two or more integers that share no common factors other than 1, meaning their Greatest Common Divisor (GCD) (or Highest Common Factor (HCF)) is 1
+
+Euler’s Totient Function φ(n):
+	Number of integers less than n that are coprime with n
+	
+φ(n) for Prime Numbers (Very Easy):
+	If p is prime: φ(p) = p − 1
+	φ(11) = 10
+
+φ(n) for Product of Two Primes (RSA Case)
+	if n = p × q   (p and q are primes)
+	then φ(n) = (p − 1)(q − 1)
+	p = 5, q = 11
+	n = 55
+	φ(55) = 4 × 10 = 40
+
+Why φ(n) Is Used in RSA
+	a^φ(n) ≡ 1 (mod n)   if GCD(a, n) = 1
+
+Euler’s theorem:
+	a^φ(n) ≡ 1 (mod n)   if GCD(a, n) = 1
+
+
+| Component                    | Role                   |
+| ---------------------------- | ---------------------- |
+| Client                       | User                   |
+| AS (Authentication Server)   | Verifies user          |
+| TGS (Ticket Granting Server) | Issues service tickets |
+| Server                       | Provides service       |
+
