@@ -35,6 +35,8 @@ The mode of operation:
 	- To build secure cipher, you must combine a secure permutation with a secure mode.
 	- Ideally this combination prevents attackers from learning anything about a message other than its length.
 
+The per
+
 
 GCD (Greatest Common Divisor) - 
 	The largest number that divides both numbers exactly.
